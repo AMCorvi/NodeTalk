@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "main": "app.js",
   "author": "AMCorvi",
+  "scripts": {
+        "start": " browser-sync --server --files ['index.html', './src/*/*', './src/*' ",
+        "build": "webpack -w"
+  },
   "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.24.0",
@@ -11,6 +15,8 @@
     "babel-preset-react": "^6.23.0"
   },
   "dependencies": {
-    "react": "^15.4.2"
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "webpack": "^2.3.1"
   }
 }
