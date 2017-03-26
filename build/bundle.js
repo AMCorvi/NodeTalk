@@ -9458,12 +9458,56 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //Component Styling
 var styles = {
+
+    chatContainer: {
+        background: 'black',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'space-between',
+        margin: 0,
+        width: '100%'
+    },
     messagesList: {
-        color: "red",
-        fontSize: "30px",
-        margin: "0px auto",
-        marginBottom: "20px"
+        alignItems: 'center',
+        color: 'white',
+        display: 'flex',
+        flexDirection: 'column',
+        fontSize: '1.3em',
+        marginTop: '40px',
+        marginBottom: '20px',
+        width: '100%'
+    },
+    messageOutgoing: {
+        alignSelf: 'flex-start',
+        background: 'purple',
+        border: '1px fuschia solid',
+        borderRadius: '10px',
+        margin: "0px 10px 5px 10px",
+        maxWidth: "55%",
+        padding: '5px'
+    },
+    messageIncoming: {
+        alignSelf: 'flex-end',
+        background: 'grey',
+        border: '1px fuschia solid',
+        borderRadius: '10px',
+        margin: "0px 10px 5px 10px",
+        maxWidth: "55%",
+        padding: '5px'
+    },
+    userInputMessageGroup: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    userMessageInput: {
+        flex: '2 1 80%'
+    },
+    userMessageSubmit: {
+        flex: '1 20%',
+        height: 70
     }
+
 };
 
 var ChatRoom = function (_Component) {
@@ -9481,37 +9525,40 @@ var ChatRoom = function (_Component) {
     }
 
     _createClass(ChatRoom, [{
-        key: "render",
+        key: 'render',
         value: function render() {
 
             return _react2.default.createElement(
-                "div",
-                null,
+                'div',
+                { style: styles.chatContainer },
                 _react2.default.createElement(
-                    "ol",
+                    'div',
                     { style: styles.messagesList },
                     _react2.default.createElement(
-                        "li",
-                        null,
-                        "meassage 1"
+                        'div',
+                        { style: styles.messageOutgoing },
+                        'message 1'
                     ),
                     _react2.default.createElement(
-                        "li",
-                        null,
-                        "meassage 2"
+                        'div',
+                        { style: styles.messageOutgoing },
+                        'message 2'
                     ),
                     _react2.default.createElement(
-                        "li",
-                        null,
-                        "meassage 3"
+                        'div',
+                        { style: styles.messageIncoming },
+                        'This is a sample of a long message. Its purpose is to determine the parameters by which longer messages are to be displayed'
                     )
                 ),
-                _react2.default.createElement("br", null),
-                _react2.default.createElement("input", { type: "text", placeholder: "Type your message here\xA0\uD83D\uDE0E" }),
                 _react2.default.createElement(
-                    "button",
-                    null,
-                    "Submit Message"
+                    'div',
+                    { style: styles.userInputMessageGroup },
+                    _react2.default.createElement('input', { style: styles.userMessageInput, type: 'text', placeholder: 'Type your message here\xA0\uD83D\uDE0E' }),
+                    _react2.default.createElement(
+                        'button',
+                        { style: styles.userMessageSubmit },
+                        'Submit Message'
+                    )
                 )
             );
         }
@@ -9574,6 +9621,16 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //External Components
 
 
+var styles = {
+    app: {
+
+        height: "100vh",
+        margin: '0',
+        width: "100vw"
+
+    }
+};
+
 var App = function (_Component) {
     _inherits(App, _Component);
 
@@ -9588,8 +9645,7 @@ var App = function (_Component) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
-                'This is nodeTalk!',
+                { style: styles.app },
                 _react2.default.createElement(_chatroom2.default, null)
             );
         }

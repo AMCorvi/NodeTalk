@@ -4,7 +4,7 @@
   "main": "app.js",
   "author": "AMCorvi",
   "scripts": {
-        "start": " browser-sync --server --files ['index.html', './src/*/*', './src/*' ",
+        "start": " browser-sync start --server . --files ['index.html', './build/*' ] --index 'index.html' ",
         "build": "webpack -w"
   },
   "license": "MIT",

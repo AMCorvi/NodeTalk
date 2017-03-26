@@ -4,14 +4,22 @@ import ReactDom from 'react-dom'
 //External Components
 import ChatRoom from "./components/chatroom.js"
 
+let styles = {
+        app: {
+
+            height: "100vh",
+            margin: '0',
+            width: "100vw",
+                        
+        }
+    }
 
 class App extends Component {
 
     render (){
         return (
 
-            <div>
-                This is nodeTalk!
+            <div style={styles.app}>
                 <ChatRoom />
             </div>
 
