@@ -7,6 +7,7 @@ import ChatRoom from "./components/chatroom.js"
 let styles = {
         app: {
 
+            fontFamily: ` 'Ubuntu', sans-serif `,
             height: "100vh",
             margin: '0',
             width: "100vw",

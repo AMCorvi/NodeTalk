@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 let styles = {
 
         chatContainer: {
-            background: 'black',
+            background: '#1A1C2B',
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
@@ -18,24 +18,26 @@ let styles = {
             color: 'white',
             display: 'flex',
             flexDirection: 'column',
-            fontSize: '1.3em',
+            fontFamily: '"Roboto", san-serif',
+            fontSize: '1em',
+            fontWeight: '300',
             marginTop: '40px',
             marginBottom: '20px',
             width: '100%'
         },
         messageOutgoing: {
-            alignSelf: 'flex-start',
-            background: 'purple',
-            border: '1px fuschia solid',
+            alignSelf: 'flex-end',
+            background: '#1F2130',
+            border: '1px  #1F2130 solid',
             borderRadius: '10px',
             margin: "0px 10px 5px 10px",
             maxWidth: "55%",
             padding: '5px'
         },
         messageIncoming: {
-            alignSelf: 'flex-end',
-            background: 'grey',
-            border: '1px fuschia solid',
+            alignSelf: 'flex-start',
+            background: '#F50057',
+            border: '1px #F50057 solid',
             borderRadius: '10px',
             margin: "0px 10px 5px 10px",
             maxWidth: "55%",
@@ -46,10 +48,22 @@ let styles = {
             justifyContent: 'center'
         },
         userMessageInput: {
-            flex: '2 1 80%'
+            background: '#1F2130',
+            border: 'none',
+            color: 'white',
+            flex: '2 1 80%',
+            fontFamily: ' "Roboto" , san-serif ',
+            fontSize: '1em',
+            fontWeight: '100',
+            textAlign: 'center'
         },
         userMessageSubmit: {
+            background: '#1F2130',
+            border: 'none',
+            color: '#F50057',
             flex: '1 20%',
+            fontFamily: ' "Roboto" , san-serif ',
+            fontSize: '1em',
             height: 70
         }
 
@@ -72,16 +86,16 @@ export default class ChatRoom extends Component {
 
     render(){
 
-
         return ( 
             <div style={styles.chatContainer} >
 
 
                     <div style={styles.messagesList}>
 
-                        <div style={ styles.messageOutgoing }>message 1</div>
-                        <div style={ styles.messageOutgoing }>message 2</div>
-                        <div style={ styles.messageIncoming }>This is a sample of a long message. Its purpose is to determine the parameters by which longer messages are to be displayed</div>
+                        <div style={ styles.messageIncoming }>message 1</div>
+                        <div style={ styles.messageIncoming }>message 2</div>
+                        <div style={ styles.messageOutgoing }>This is a sample of a long message. Its purpose is to determine the parameters by which longer messages are to be displayed</div>
+
                     </div>
 
 
@@ -89,7 +103,7 @@ export default class ChatRoom extends Component {
                 <div style={styles.userInputMessageGroup}>
                     
                     <input style={styles.userMessageInput} type="text" placeholder="Type your message here 😎" />
-                    <button style={styles.userMessageSubmit}>Submit Message</button>
+                    <button style={styles.userMessageSubmit}>Send</button>
 
                 </div>
 

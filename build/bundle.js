@@ -9460,7 +9460,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var styles = {
 
     chatContainer: {
-        background: 'black',
+        background: '#1A1C2B',
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
@@ -9473,24 +9473,26 @@ var styles = {
         color: 'white',
         display: 'flex',
         flexDirection: 'column',
-        fontSize: '1.3em',
+        fontFamily: '"Roboto", san-serif',
+        fontSize: '1em',
+        fontWeight: '300',
         marginTop: '40px',
         marginBottom: '20px',
         width: '100%'
     },
     messageOutgoing: {
-        alignSelf: 'flex-start',
-        background: 'purple',
-        border: '1px fuschia solid',
+        alignSelf: 'flex-end',
+        background: '#1F2130',
+        border: '1px  #1F2130 solid',
         borderRadius: '10px',
         margin: "0px 10px 5px 10px",
         maxWidth: "55%",
         padding: '5px'
     },
     messageIncoming: {
-        alignSelf: 'flex-end',
-        background: 'grey',
-        border: '1px fuschia solid',
+        alignSelf: 'flex-start',
+        background: '#F50057',
+        border: '1px #F50057 solid',
         borderRadius: '10px',
         margin: "0px 10px 5px 10px",
         maxWidth: "55%",
@@ -9501,10 +9503,22 @@ var styles = {
         justifyContent: 'center'
     },
     userMessageInput: {
-        flex: '2 1 80%'
+        background: '#1F2130',
+        border: 'none',
+        color: 'white',
+        flex: '2 1 80%',
+        fontFamily: ' "Roboto" , san-serif ',
+        fontSize: '1em',
+        fontWeight: '100',
+        textAlign: 'center'
     },
     userMessageSubmit: {
+        background: '#1F2130',
+        border: 'none',
+        color: '#F50057',
         flex: '1 20%',
+        fontFamily: ' "Roboto" , san-serif ',
+        fontSize: '1em',
         height: 70
     }
 
@@ -9536,17 +9550,17 @@ var ChatRoom = function (_Component) {
                     { style: styles.messagesList },
                     _react2.default.createElement(
                         'div',
-                        { style: styles.messageOutgoing },
+                        { style: styles.messageIncoming },
                         'message 1'
                     ),
                     _react2.default.createElement(
                         'div',
-                        { style: styles.messageOutgoing },
+                        { style: styles.messageIncoming },
                         'message 2'
                     ),
                     _react2.default.createElement(
                         'div',
-                        { style: styles.messageIncoming },
+                        { style: styles.messageOutgoing },
                         'This is a sample of a long message. Its purpose is to determine the parameters by which longer messages are to be displayed'
                     )
                 ),
@@ -9557,7 +9571,7 @@ var ChatRoom = function (_Component) {
                     _react2.default.createElement(
                         'button',
                         { style: styles.userMessageSubmit },
-                        'Submit Message'
+                        'Send'
                     )
                 )
             );
@@ -9624,6 +9638,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var styles = {
     app: {
 
+        fontFamily: ' \'Ubuntu\', sans-serif ',
         height: "100vh",
         margin: '0',
         width: "100vw"
