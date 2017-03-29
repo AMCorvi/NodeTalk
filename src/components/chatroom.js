@@ -13,23 +13,45 @@ let styles = {
             margin: 0,
             width: '100%'
         },
+        chatStatusBar:{
+            background: 'rgba(26, 28, 43, 0.4)',
+            boxShadow: '1px -30px 60px 0.1px white',
+            color: 'chartreuse',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: 55,
+            position: 'absolute',
+            width: '100%'
+        },
+        statusMessage: {},
         messagesList: {
             alignItems: 'center',
             color: 'white',
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
             fontFamily: '"Roboto", san-serif',
             fontSize: '1em',
             fontWeight: '300',
-            marginTop: '40px',
-            marginBottom: '20px',
+            height: '100%',
+            margin: '55px 0 0 0 ',
+            overflow: 'scroll',
             width: '100%'
+        },
+        messageGroup: {
+            display: 'flex',
+            // flex: '1 1 100%',
+            flexDirection: 'column',
+            margin: '10px 0px',
+            width:'100%'
         },
         messageOutgoing: {
             alignSelf: 'flex-end',
             background: '#1F2130',
             border: '1px  #1F2130 solid',
-            borderRadius: '10px',
+            borderRadius: '15px',
+            height: 'auto',
             margin: "0px 10px 5px 10px",
             maxWidth: "55%",
             padding: '5px'
@@ -39,23 +61,27 @@ let styles = {
             background: '#F50057',
             border: '1px #F50057 solid',
             borderRadius: '10px',
+            height: 'auto',
             margin: "0px 10px 5px 10px",
             maxWidth: "55%",
             padding: '5px'
         },
-        userInputMessageGroup: { 
+        userMessageInputGroup: { 
             display: 'flex',
-            justifyContent: 'center'
+            alignItems: 'center', 
+            lineHeight: 3
         },
         userMessageInput: {
             background: '#1F2130',
             border: 'none',
             color: 'white',
-            flex: '2 1 80%',
+            flex: '1 80%',
             fontFamily: ' "Roboto" , san-serif ',
             fontSize: '1em',
             fontWeight: '100',
-            textAlign: 'center'
+            height: 68,
+            textAlign: 'center',
+            verticalAlign: 'center'
         },
         userMessageSubmit: {
             background: '#1F2130',
@@ -74,36 +100,117 @@ export default class ChatRoom extends Component {
 
     constructor(props,context){
         super(props, context)
+        this.retrieveMessages = this.retrieveMessages.bind(this);
         this.state =  {
+            currentUser: "AMCorvi", 
             messages: [
-                {id:1, text: 'first message'},
-                {id:2, text: 'second message'},
-                {id:3, text: 'third message'},
+                {id:1, user:"Kernel",  time: Date.now(), text: 'first message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
+              
             ]
         }
     }
+    
+    retrieveMessages(){
+       let messages = this.state.messages.map(
+            (elem, index)=>{
+                if (elem.user == this.state.currentUser){
+                    return (
+                        <div className='messageGroup' key={index} style={styles.messageGroup}>
+                            <div className="messageOutgoing" style={styles.messageOutgoing} >
+                                {elem.text}
+                            </div>
+                        </div>
+                    )
+                } else{
+                    return (
+                        <div className="messageGroup" key={index} style={styles.messageGroup}>
+                            <div className="messageIncoming" style={styles.messageIncoming} >
+                                {elem.text}
+                            </div>
+                        </div>
+                    )
+                }
+            }
+        )
+
+        return messages
+    } // end of retrieveMessage_function
     
 
     render(){
 
         return ( 
-            <div style={styles.chatContainer} >
+            <div className='chatContainer' style={styles.chatContainer} >
+                        <div className='chatStatusBar' style={styles.chatStatusBar}>
+                            <div className='statusMessage' style={styles.statusMessage}> 
+                                • &nbsp;  &nbsp; Connected
+                            </div>
+                        </div>
 
 
-                    <div style={styles.messagesList}>
-
-                        <div style={ styles.messageIncoming }>message 1</div>
-                        <div style={ styles.messageIncoming }>message 2</div>
-                        <div style={ styles.messageOutgoing }>This is a sample of a long message. Its purpose is to determine the parameters by which longer messages are to be displayed</div>
+                    <div className='messagesList' style={styles.messagesList}>
+                       
+                        {this.retrieveMessages()}
 
                     </div>
 
 
-
-                <div style={styles.userInputMessageGroup}>
+                <div className='userMessageInputGroup'  style={styles.userMessageInputGroup}>
                     
-                    <input style={styles.userMessageInput} type="text" placeholder="Type your message here 😎" />
-                    <button style={styles.userMessageSubmit}>Send</button>
+                    <textarea className='userMessageInput' style={styles.userMessageInput} type="text" placeholder="Type your message here 😎" />
+                    <button className='userMessageSubmit' style={styles.userMessageSubmit}>Send</button>
 
                 </div>
 
