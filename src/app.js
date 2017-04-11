@@ -7,13 +7,18 @@ import UserWindow from "./components/userwindow.js";
 
 let styles = {
         app: {
-
+            display: 'flex',
             fontFamily: ` 'Ubuntu', sans-serif `,
-            height: "100vh",
+            height: "100%",
             margin: '0',
-            width: "100vw",
-                        
-        }
+            width: "100%",
+        },
+        // userWindow: {
+        //     flex: '1 0 1px',
+        // },
+        // chatRoom: {
+        //     flex: '2 1 25%',
+        // }
     }
 
 class App extends Component {
@@ -22,10 +27,9 @@ class App extends Component {
         return (
 
             <div style={styles.app}>
-                <UserWindow />
-                <ChatRoom />
+                <UserWindow style={styles.userWindow} />
+                <ChatRoom style={styles.chatRoom} />
             </div>
-
             
         )
     }

@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 
 
 //Component Styling
+
+let mainColor = '#1A1C2B',
+    accentColor = '#1F2130';
+
 let styles = {
 
         chatContainer: {
@@ -14,17 +18,28 @@ let styles = {
             width: '100%'
         },
         chatStatusBar:{
-            background: 'rgba(26, 28, 43, 0.4)',
+            background: 'rgba(26, 28, 43, 0.9)',
             boxShadow: '1px -30px 60px 0.1px white',
             color: 'chartreuse',
             display: 'flex',
+            // filter: 'blur(5px)',
             justifyContent: 'center',
             alignItems: 'center',
             height: 55,
             position: 'absolute',
             width: '100%'
+            
         },
-        statusMessage: {},
+        statusBlur: {
+            filter: 'blur(5px)',
+            height: '100%',
+            position: 'absolute',
+            width: '100%',
+        },
+        statusMessage: {
+            left: '35%',
+            position: 'absolute'
+        },
         messagesList: {
             alignItems: 'center',
             color: 'white',
@@ -35,8 +50,9 @@ let styles = {
             fontSize: '1em',
             fontWeight: '300',
             height: '100%',
-            margin: '55px 0 0 0 ',
+            // margin: '55px 0 0 0 ',
             overflow: 'scroll',
+            padding: '55px 0 20px 0',
             width: '100%'
         },
         messageGroup: {
@@ -48,7 +64,7 @@ let styles = {
         },
         messageOutgoing: {
             alignSelf: 'flex-end',
-            background: '#1F2130',
+            background: '#1f2130',
             border: '1px  #1F2130 solid',
             borderRadius: '15px',
             height: 'auto',
@@ -194,6 +210,7 @@ export default class ChatRoom extends Component {
         return ( 
             <div className='chatContainer' style={styles.chatContainer} >
                         <div className='chatStatusBar' style={styles.chatStatusBar}>
+                            <div className='statusBlur' style={styles.statusBlur}> &nbsp; </div> 
                             <div className='statusMessage' style={styles.statusMessage}> 
                                 • &nbsp;  &nbsp; Connected
                             </div>
