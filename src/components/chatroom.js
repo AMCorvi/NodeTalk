@@ -12,7 +12,7 @@ let styles = {
             background: '#1A1C2B',
             display: 'flex',
             flexDirection: 'column',
-            height: '100%',
+            height: '100vh',
             justifyContent: 'space-between',
             margin: 0,
             width: '100%'
@@ -83,9 +83,10 @@ let styles = {
             padding: '5px'
         },
         userMessageInputGroup: { 
-            display: 'flex',
             alignItems: 'center', 
-            lineHeight: 3
+            display: 'flex',
+            lineHeight: 3,
+            marginTop: 10
         },
         userMessageInput: {
             background: '#1F2130',
@@ -117,65 +118,36 @@ export default class ChatRoom extends Component {
     constructor(props,context){
         super(props, context)
         this.retrieveMessages = this.retrieveMessages.bind(this);
+        this.postMessage = this.postMessage.bind(this);
         this.state =  {
             currentUser: "AMCorvi", 
+            currentUserMessage: '',
             messages: [
                 {id:1, user:"Kernel",  time: Date.now(), text: 'first message'},
                 {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
                 {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-              
             ]
         }
+    }
+
+
+    postMessage(e){
+        console.log(e)
+        // if (e.which=13){
+        //     this.state.messages.push(
+        //         {
+        //         id: (this.state.messages.length + 1 ),
+        //         time: Date.now(),
+        //         text: e.target.value
+        //         }
+        //     )
+        //
+        //     this.state.currentUserMessage = ''
+        // } else {
+        //
+        //     this.state.currentUserMessage = e.target.value
+        //
+        // }
     }
     
     retrieveMessages(){
@@ -226,7 +198,15 @@ export default class ChatRoom extends Component {
 
                 <div className='userMessageInputGroup'  style={styles.userMessageInputGroup}>
                     
-                    <textarea className='userMessageInput' style={styles.userMessageInput} type="text" placeholder="Type your message here 😎" />
+                    <textarea
+                        className='userMessageInput' style={styles.userMessageInput} type="text"
+                        placeholder="Type your message here 😎" 
+                        onChange={this.postMessage}
+                        value={this.state.UserMessage}
+                    /> 
+
+
+
                     <button className='userMessageSubmit' style={styles.userMessageSubmit}>Send</button>
 
                 </div>

@@ -4,8 +4,8 @@ import React, {Component} from 'react';
 
 // Component Styles
 
-    let mainColor = '#1A1C2B',
-        accentColor = '#1F2130';
+    const mainColor = "#1A1C2B",
+        accentColor = "#F50057";
 
     let styles = {
             userWindowContainer: {
@@ -28,19 +28,27 @@ import React, {Component} from 'react';
             },
             userList:{
                 // background: 'white',
-                height: '100%',
+                // height: '100vh',
                 marginTop: 55,
                 overflow: 'scroll'
             },
             user: {
-                color: 'white',
-                fontSize: '1em',
-                // background: '#F50057',
-                borderBottom: '1px solid gray',
+                alignItems: 'center',
+                background: 'white',
+                color: accentColor,
+                borderBottom: '1px solid #f2f2f2',
+                display: "flex",
+                fontSize: '.9em',
+                justifyContent: 'center',
                 // borderTop: '1px solid grey',
-                padding: '20px',
+                padding: '10px',
+            },
+            userIMG: {
+                borderRadius: 30
+            },
+            userName: {
+                paddingLeft: 20
             }
-
     }
 
 
@@ -50,15 +58,16 @@ import React, {Component} from 'react';
             super(props)
             this.retrieveListofUsers = this.retrieveListOfUsers.bind(this);
             this.state = {
-                    users: ['AMCorvi', 'greenburg', 'Stan', 'Kyle', 'Kenny', 'Cartman','AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle', ]
+                    users: ['AMCorvi', 'greenburg', 'Stan', 'Kyle', 'Kenny', 'Cartman','AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle',,'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle',,'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle', ]
                 }
         }
 
         retrieveListOfUsers(){
             let user = this.state.users.map( (elem, index) => {
                 return (
-                    <div className="user" style={styles.user}>
-                        {elem}
+                    <div className="user" key={index} style={styles.user}>
+                        <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem}`} alt=""/>
+                        <div className='userName' style={styles.userName}>{elem}</div>
                     </div>
                 )
             })

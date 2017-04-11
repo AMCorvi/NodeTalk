@@ -9477,7 +9477,7 @@ var styles = {
         background: '#1A1C2B',
         display: 'flex',
         flexDirection: 'column',
-        height: '100%',
+        height: '100vh',
         justifyContent: 'space-between',
         margin: 0,
         width: '100%'
@@ -9548,9 +9548,10 @@ var styles = {
         padding: '5px'
     },
     userMessageInputGroup: {
-        display: 'flex',
         alignItems: 'center',
-        lineHeight: 3
+        display: 'flex',
+        lineHeight: 3,
+        marginTop: 10
     },
     userMessageInput: {
         background: '#1F2130',
@@ -9585,14 +9586,36 @@ var ChatRoom = function (_Component) {
         var _this = _possibleConstructorReturn(this, (ChatRoom.__proto__ || Object.getPrototypeOf(ChatRoom)).call(this, props, context));
 
         _this.retrieveMessages = _this.retrieveMessages.bind(_this);
+        _this.postMessage = _this.postMessage.bind(_this);
         _this.state = {
             currentUser: "AMCorvi",
-            messages: [{ id: 1, user: "Kernel", time: Date.now(), text: 'first message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }]
+            currentUserMessage: '',
+            messages: [{ id: 1, user: "Kernel", time: Date.now(), text: 'first message' }, { id: 2, user: "Kernel", time: Date.now(), text: 'second message' }, { id: 3, user: "AMCorvi", time: Date.now(), text: 'third message' }]
         };
         return _this;
     }
 
     _createClass(ChatRoom, [{
+        key: 'postMessage',
+        value: function postMessage(e) {
+            console.log(e);
+            // if (e.which=13){
+            //     this.state.messages.push(
+            //         {
+            //         id: (this.state.messages.length + 1 ),
+            //         time: Date.now(),
+            //         text: e.target.value
+            //         }
+            //     )
+            //
+            //     this.state.currentUserMessage = ''
+            // } else {
+            //
+            //     this.state.currentUserMessage = e.target.value
+            //
+            // }
+        }
+    }, {
         key: 'retrieveMessages',
         value: function retrieveMessages() {
             var _this2 = this;
@@ -9654,7 +9677,12 @@ var ChatRoom = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'userMessageInputGroup', style: styles.userMessageInputGroup },
-                    _react2.default.createElement('textarea', { className: 'userMessageInput', style: styles.userMessageInput, type: 'text', placeholder: 'Type your message here\xA0\uD83D\uDE0E' }),
+                    _react2.default.createElement('textarea', {
+                        className: 'userMessageInput', style: styles.userMessageInput, type: 'text',
+                        placeholder: 'Type your message here\xA0\uD83D\uDE0E',
+                        onChange: this.postMessage,
+                        value: this.state.UserMessage
+                    }),
                     _react2.default.createElement(
                         'button',
                         { className: 'userMessageSubmit', style: styles.userMessageSubmit },
@@ -9697,8 +9725,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // Component Styles
 
-var mainColor = '#1A1C2B',
-    accentColor = '#1F2130';
+var mainColor = "#1A1C2B",
+    accentColor = "#F50057";
 
 var styles = {
     userWindowContainer: {
@@ -9721,19 +9749,27 @@ var styles = {
     },
     userList: {
         // background: 'white',
-        height: '100%',
+        // height: '100vh',
         marginTop: 55,
         overflow: 'scroll'
     },
     user: {
-        color: 'white',
-        fontSize: '1em',
-        // background: '#F50057',
-        borderBottom: '1px solid gray',
+        alignItems: 'center',
+        background: 'white',
+        color: accentColor,
+        borderBottom: '1px solid #f2f2f2',
+        display: "flex",
+        fontSize: '.9em',
+        justifyContent: 'center',
         // borderTop: '1px solid grey',
-        padding: '20px'
+        padding: '10px'
+    },
+    userIMG: {
+        borderRadius: 30
+    },
+    userName: {
+        paddingLeft: 20
     }
-
 };
 
 var UserWindow = function (_Component) {
@@ -9746,39 +9782,44 @@ var UserWindow = function (_Component) {
 
         _this.retrieveListofUsers = _this.retrieveListOfUsers.bind(_this);
         _this.state = {
-            users: ['AMCorvi', 'greenburg', 'Stan', 'Kyle', 'Kenny', 'Cartman', 'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle']
+            users: ['AMCorvi', 'greenburg', 'Stan', 'Kyle', 'Kenny', 'Cartman', 'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle',, 'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle',, 'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle']
         };
         return _this;
     }
 
     _createClass(UserWindow, [{
-        key: 'retrieveListOfUsers',
+        key: "retrieveListOfUsers",
         value: function retrieveListOfUsers() {
             var user = this.state.users.map(function (elem, index) {
                 return _react2.default.createElement(
-                    'div',
-                    { className: 'user', style: styles.user },
-                    elem
+                    "div",
+                    { className: "user", key: index, style: styles.user },
+                    _react2.default.createElement("img", { className: "userIMG", style: styles.userIMG, src: "http://i.pravatar.cc/40?u=" + elem, alt: "" }),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "userName", style: styles.userName },
+                        elem
+                    )
                 );
             });
 
             return user;
         }
     }, {
-        key: 'render',
+        key: "render",
         value: function render() {
 
             return _react2.default.createElement(
-                'div',
-                { className: 'userWindowContainer', style: styles.userWindowContainer },
+                "div",
+                { className: "userWindowContainer", style: styles.userWindowContainer },
                 _react2.default.createElement(
-                    'div',
-                    { className: 'titleBar', style: styles.titleBar },
-                    'nodeTalk'
+                    "div",
+                    { className: "titleBar", style: styles.titleBar },
+                    "nodeTalk"
                 ),
                 _react2.default.createElement(
-                    'div',
-                    { className: 'userList', style: styles.userList },
+                    "div",
+                    { className: "userList", style: styles.userList },
                     this.retrieveListOfUsers()
                 )
             );

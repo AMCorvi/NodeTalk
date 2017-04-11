@@ -14,7 +14,7 @@ let styles = {
             width: "100%",
         },
         // userWindow: {
-        //     flex: '1 0 1px',
+        //     flex: '1 1 75%',
         // },
         // chatRoom: {
         //     flex: '2 1 25%',
