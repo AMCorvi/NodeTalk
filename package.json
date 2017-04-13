@@ -4,8 +4,8 @@
   "main": "app.js",
   "author": "AMCorvi",
   "scripts": {
-        "start": " browser-sync start --server . --files ['index.html', './build/*' ] --index 'index.html' ",
-        "build": "webpack -w"
+    "start": " browser-sync start --server . --files ['index.html', './build/*' ] --index 'index.html' ",
+    "build": "webpack -w"
   },
   "license": "MIT",
   "devDependencies": {
@@ -15,6 +15,7 @@
     "babel-preset-react": "^6.23.0"
   },
   "dependencies": {
+    "moment": "^2.18.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "webpack": "^2.3.1"

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import moment from 'moment';
 
 //Component Styling
 
@@ -41,7 +41,7 @@ let styles = {
             position: 'absolute'
         },
         messagesList: {
-            alignItems: 'center',
+            alignItems: 'space-around',
             color: 'white',
             display: 'flex',
             flexDirection: 'row',
@@ -72,6 +72,18 @@ let styles = {
             maxWidth: "55%",
             padding: '5px'
         },
+        messageUserOutgoing: {
+            alignSelf: 'flex-end',
+            color: 'lightgrey',
+            fontSize: '.3em',
+            marginRight: '3%',
+        },
+        messageTimeOutgoing: {
+            alignSelf: 'flex-end',
+            color: 'lightgrey',
+            fontSize: '.3em',
+            marginRight: '3%',
+        },
         messageIncoming: {
             alignSelf: 'flex-start',
             background: '#F50057',
@@ -81,6 +93,18 @@ let styles = {
             margin: "0px 10px 5px 10px",
             maxWidth: "55%",
             padding: '5px'
+        },
+        messageUserIncoming: {
+            alignSelf: 'flex-start',
+            color: 'lightgrey',
+            fontSize: '.3em',
+            marginLeft: '3%',
+        },
+        messageTimeIncoming:{
+            alignSelf: 'flex-start',
+            color: 'lightgrey',
+            fontSize: '.3em',
+            marginLeft: '3%',
         },
         userMessageInputGroup: { 
             alignItems: 'center', 
@@ -125,8 +149,8 @@ export default class ChatRoom extends Component {
             currentUser: "AMCorvi", 
             currentUserMessage: '',
             messages: [
-                {id:1, user:"Kernel",  time: Date.now(), text: 'first message'},
-                {id:2, user:"Kernel", time: Date.now(), text: 'second message'},
+                {id:1, user:"Kyle",  time: Date.now(), text: 'first message'},
+                {id:2, user:"Cartman's Mom", time:  Date.now(), text: 'second message'},
                 {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
             ]
         }
@@ -165,17 +189,21 @@ export default class ChatRoom extends Component {
                 if (elem.user == this.state.currentUser){
                     return (
                         <div className='messageGroup' key={index} style={styles.messageGroup}>
+                            <div className="messageUser" style={styles.messageUserOutgoing}> {elem.user} </div>
                             <div className="messageOutgoing" style={styles.messageOutgoing} >
                                 {elem.text}
                             </div>
+                            <div className="messageTime" style={ styles.messageTimeOutgoing}> {moment( elem.time ).fromNow()} </div>
                         </div>
                     )
                 } else{
                     return (
                         <div className="messageGroup" key={index} style={styles.messageGroup}>
+                            <div className="messageUser" style={styles.messageUserIncoming}> {elem.user} </div>
                             <div className="messageIncoming" style={styles.messageIncoming} >
                                 {elem.text}
                             </div>
+                            <div className="messageTime" style={ styles.messageTimeIncoming}> {moment( elem.time ).fromNow()} </div>
                         </div>
                     )
                 }
@@ -188,7 +216,7 @@ export default class ChatRoom extends Component {
     scrollToLastMessage(){
             
             let messageWindowElement = document.getElementsByClassName('messagesList')
-            let messageWindowHeight = messageWindowElement[0].scrollHeight;
+            let messageWindowHeight = messageWindowElement[0].scrollHeight + 1000000;
             messageWindowElement[0].scrollTop = messageWindowHeight;
         }
 
