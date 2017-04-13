@@ -58,7 +58,7 @@ import React, {Component} from 'react';
             super(props)
             this.retrieveListofUsers = this.retrieveListOfUsers.bind(this);
             this.state = {
-                    users: ['AMCorvi', 'greenburg', 'Stan', 'Kyle', 'Kenny', 'Cartman','AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle',,'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle',,'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle', ]
+                    users: ['AMCorvi', "Cartman's Mom", 'Stan', 'Kyle', 'Kenny', 'Cartman','AMCorvi', "Cartman's Mom", 'Stan', 'Kyle', 'AMCorvi', "Cartman's Mom", 'Stan', 'Kyle' ]
                 }
         }
 

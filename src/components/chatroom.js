@@ -15,7 +15,7 @@ let styles = {
             height: '100vh',
             justifyContent: 'space-between',
             margin: 0,
-            width: '100%'
+            width: '75%'
         },
         chatStatusBar:{
             background: 'rgba(26, 28, 43, 0.9)',
@@ -27,7 +27,7 @@ let styles = {
             alignItems: 'center',
             height: 55,
             position: 'absolute',
-            width: '100%'
+            width: '75%'
             
         },
         statusBlur: {
@@ -117,8 +117,10 @@ export default class ChatRoom extends Component {
 
     constructor(props,context){
         super(props, context)
-        this.retrieveMessages = this.retrieveMessages.bind(this);
         this.postMessage = this.postMessage.bind(this);
+        this.retrieveMessages = this.retrieveMessages.bind(this);
+        this.scrollToLastMessage = this.scrollToLastMessage.bind(this);
+        this.messageList = document.getElementsByClassName('messagesList');
         this.state =  {
             currentUser: "AMCorvi", 
             currentUserMessage: '',
@@ -130,25 +132,32 @@ export default class ChatRoom extends Component {
         }
     }
 
+   
 
     postMessage(e){
-        console.log(e)
-        // if (e.which=13){
-        //     this.state.messages.push(
-        //         {
-        //         id: (this.state.messages.length + 1 ),
-        //         time: Date.now(),
-        //         text: e.target.value
-        //         }
-        //     )
-        //
-        //     this.state.currentUserMessage = ''
-        // } else {
-        //
-        //     this.state.currentUserMessage = e.target.value
-        //
-        // }
-    }
+        
+        // console.log(e.target.value);
+        // console.log( this.state.messages, this.state.currentUserMessage )
+
+        if (e.target.value != '' && e.key === 'Enter'){
+            console.log(e.key, e.target.value)
+            this.setState( { messages: [
+                                            ...this.state.messages,
+                                            {
+                                                id: (this.state.messages.length + 1 ),
+                                                user: this.state.currentUser,
+                                                time: Date.now(),
+                                                text: e.target.value
+                                            }
+                                       ] 
+                                }
+            )
+
+
+            this.scrollToLastMessage();
+            return e.target.value  = ""
+        }//end of if_block 
+    }// end of postMessage_function 
     
     retrieveMessages(){
        let messages = this.state.messages.map(
@@ -176,6 +185,12 @@ export default class ChatRoom extends Component {
         return messages
     } // end of retrieveMessage_function
     
+    scrollToLastMessage(){
+            
+            let messageWindowElement = document.getElementsByClassName('messagesList')
+            let messageWindowHeight = messageWindowElement[0].scrollHeight;
+            messageWindowElement[0].scrollTop = messageWindowHeight;
+        }
 
     render(){
 
@@ -201,8 +216,7 @@ export default class ChatRoom extends Component {
                     <textarea
                         className='userMessageInput' style={styles.userMessageInput} type="text"
                         placeholder="Type your message here 😎" 
-                        onChange={this.postMessage}
-                        value={this.state.UserMessage}
+                        onKeyPress={this.postMessage}
                     /> 
 
 

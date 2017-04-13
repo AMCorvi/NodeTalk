@@ -9460,6 +9460,8 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -9480,7 +9482,7 @@ var styles = {
         height: '100vh',
         justifyContent: 'space-between',
         margin: 0,
-        width: '100%'
+        width: '75%'
     },
     chatStatusBar: {
         background: 'rgba(26, 28, 43, 0.9)',
@@ -9492,7 +9494,7 @@ var styles = {
         alignItems: 'center',
         height: 55,
         position: 'absolute',
-        width: '100%'
+        width: '75%'
 
     },
     statusBlur: {
@@ -9585,8 +9587,10 @@ var ChatRoom = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (ChatRoom.__proto__ || Object.getPrototypeOf(ChatRoom)).call(this, props, context));
 
-        _this.retrieveMessages = _this.retrieveMessages.bind(_this);
         _this.postMessage = _this.postMessage.bind(_this);
+        _this.retrieveMessages = _this.retrieveMessages.bind(_this);
+        _this.scrollToLastMessage = _this.scrollToLastMessage.bind(_this);
+        _this.messageList = document.getElementsByClassName('messagesList');
         _this.state = {
             currentUser: "AMCorvi",
             currentUserMessage: '',
@@ -9598,23 +9602,25 @@ var ChatRoom = function (_Component) {
     _createClass(ChatRoom, [{
         key: 'postMessage',
         value: function postMessage(e) {
-            console.log(e);
-            // if (e.which=13){
-            //     this.state.messages.push(
-            //         {
-            //         id: (this.state.messages.length + 1 ),
-            //         time: Date.now(),
-            //         text: e.target.value
-            //         }
-            //     )
-            //
-            //     this.state.currentUserMessage = ''
-            // } else {
-            //
-            //     this.state.currentUserMessage = e.target.value
-            //
-            // }
-        }
+
+            // console.log(e.target.value);
+            // console.log( this.state.messages, this.state.currentUserMessage )
+
+            if (e.target.value != '' && e.key === 'Enter') {
+                console.log(e.key, e.target.value);
+                this.setState({ messages: [].concat(_toConsumableArray(this.state.messages), [{
+                        id: this.state.messages.length + 1,
+                        user: this.state.currentUser,
+                        time: Date.now(),
+                        text: e.target.value
+                    }])
+                });
+
+                this.scrollToLastMessage();
+                return e.target.value = "";
+            } //end of if_block 
+        } // end of postMessage_function 
+
     }, {
         key: 'retrieveMessages',
         value: function retrieveMessages() {
@@ -9647,7 +9653,14 @@ var ChatRoom = function (_Component) {
             return messages;
         } // end of retrieveMessage_function
 
+    }, {
+        key: 'scrollToLastMessage',
+        value: function scrollToLastMessage() {
 
+            var messageWindowElement = document.getElementsByClassName('messagesList');
+            var messageWindowHeight = messageWindowElement[0].scrollHeight;
+            messageWindowElement[0].scrollTop = messageWindowHeight;
+        }
     }, {
         key: 'render',
         value: function render() {
@@ -9680,8 +9693,7 @@ var ChatRoom = function (_Component) {
                     _react2.default.createElement('textarea', {
                         className: 'userMessageInput', style: styles.userMessageInput, type: 'text',
                         placeholder: 'Type your message here\xA0\uD83D\uDE0E',
-                        onChange: this.postMessage,
-                        value: this.state.UserMessage
+                        onKeyPress: this.postMessage
                     }),
                     _react2.default.createElement(
                         'button',
@@ -9782,7 +9794,7 @@ var UserWindow = function (_Component) {
 
         _this.retrieveListofUsers = _this.retrieveListOfUsers.bind(_this);
         _this.state = {
-            users: ['AMCorvi', 'greenburg', 'Stan', 'Kyle', 'Kenny', 'Cartman', 'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle',, 'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle',, 'AMCorvi', 'greenburg', 'Stan', 'Kyle', 'AMCorvi', 'greenburg', 'Stan', 'Kyle']
+            users: ['AMCorvi', "Cartman's Mom", 'Stan', 'Kyle', 'Kenny', 'Cartman', 'AMCorvi', "Cartman's Mom", 'Stan', 'Kyle', 'AMCorvi', "Cartman's Mom", 'Stan', 'Kyle']
         };
         return _this;
     }
