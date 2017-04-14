@@ -25146,6 +25146,7 @@ var styles = {
         fontSize: '1em',
         fontWeight: '100',
         height: 68,
+        margin: 0,
         textAlign: 'center',
         verticalAlign: 'center'
     },
@@ -25156,10 +25157,12 @@ var styles = {
         flex: '1 20%',
         fontFamily: ' "Roboto" , san-serif ',
         fontSize: '1em',
-        height: 70
+        height: 70,
+        margin: 0
     }
 
-};
+}; // end of 'style' object
+
 
 var ChatRoom = function (_Component) {
     _inherits(ChatRoom, _Component);
@@ -25174,7 +25177,7 @@ var ChatRoom = function (_Component) {
         _this.scrollToLastMessage = _this.scrollToLastMessage.bind(_this);
         _this.messageList = document.getElementsByClassName('messagesList');
         _this.state = {
-            currentUser: "AMCorvi",
+            currentUser: '',
             currentUserMessage: '',
             messages: {}
         };
@@ -25196,13 +25199,23 @@ var ChatRoom = function (_Component) {
                     });
                 }
             });
-        }
+        } // end of  componentDidMount_function
+
+
+    }, {
+        key: 'componentWillReceiveProps',
+        value: function componentWillReceiveProps(nextprops) {
+            this.state.currentUser === nextprops ? null : this.setState({ currentUser: nextprops.clientuser });
+        } // end of componentWillReceiveProps_function
+
+
     }, {
         key: 'postMessage',
         value: function postMessage(e) {
 
-            if (e.target.value != '' && e.key === 'Enter') {
+            if (e.target.value != "" && (e.key == 'Enter' || e.button == 0)) {
 
+                // Package new message in variable in order to post
                 var newMessage = {
                     id: _.size(this.state.messages) + 1,
                     user: this.state.currentUser,
@@ -25210,6 +25223,10 @@ var ChatRoom = function (_Component) {
                     text: e.target.value
                 };
 
+                // Remove text from inputfield
+                e.target.value = "";
+
+                //Post Message to Real-time Database
                 firebase.database().ref('messages/' + newMessage.time + '-' + newMessage.user).set(newMessage);
 
                 // this.setState( { messages: [
@@ -25224,11 +25241,15 @@ var ChatRoom = function (_Component) {
                 //                     }
                 // )
 
-
+                //Scroll new message into view
                 this.scrollToLastMessage();
-                e.target.value = "";
+
+                // Remove residule space or carriage return from input field
+                var inputTag = document.getElementsByClassName('userMessageInput');
+                inputTag[0].value = "";
             } //end of if_block 
         } // end of postMessage_function 
+
 
     }, {
         key: 'retrieveMessages',
@@ -25291,6 +25312,7 @@ var ChatRoom = function (_Component) {
             return messages;
         } // end of retrieveMessage_function
 
+
     }, {
         key: 'scrollToLastMessage',
         value: function scrollToLastMessage() {
@@ -25298,7 +25320,9 @@ var ChatRoom = function (_Component) {
             var messageWindowElement = document.getElementsByClassName('messagesList');
             var messageWindowHeight = messageWindowElement[0].scrollHeight + 1000000;
             messageWindowElement[0].scrollTop = messageWindowHeight;
-        }
+        } // end of scrollToLastMessage_function
+
+
     }, {
         key: 'render',
         value: function render() {
@@ -25328,14 +25352,14 @@ var ChatRoom = function (_Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'userMessageInputGroup', style: styles.userMessageInputGroup },
-                    _react2.default.createElement('textarea', {
+                    _react2.default.createElement('input', {
                         className: 'userMessageInput', style: styles.userMessageInput, type: 'text',
                         placeholder: 'Type your message here\xA0\uD83D\uDE0E',
                         onKeyPress: this.postMessage
                     }),
                     _react2.default.createElement(
                         'button',
-                        { className: 'userMessageSubmit', style: styles.userMessageSubmit },
+                        { className: 'userMessageSubmit', style: styles.userMessageSubmit, onClick: this.postMessage },
                         'Send'
                     )
                 )
@@ -25549,6 +25573,7 @@ var App = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
+        _this.setClientUsername = _this.setClientUsername.bind(_this);
         _this.state = {
             clientUser: ''
         };
@@ -25556,12 +25581,17 @@ var App = function (_Component) {
     }
 
     _createClass(App, [{
+        key: 'setClientUsername',
+        value: function setClientUsername(username) {
+            this.setState({ clientUser: username });
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 { style: styles.app },
-                _react2.default.createElement(_signin_modal2.default, { clientuser: this.state.clientUser }),
+                _react2.default.createElement(_signin_modal2.default, { setUser: this.setClientUsername }),
                 _react2.default.createElement(_userwindow2.default, { clientuser: this.state.clientUser, style: styles.userWindow }),
                 _react2.default.createElement(_chatroom2.default, { clientuser: this.state.clientUser, style: styles.chatRoom })
             );
@@ -55256,7 +55286,6 @@ var styles = {
         outline: "none",
         textAlign: 'center',
         width: '50%'
-
     }
 };
 
@@ -55268,6 +55297,7 @@ var SignInModal = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (SignInModal.__proto__ || Object.getPrototypeOf(SignInModal)).call(this, props, context));
 
+        _this.setClientUsername = _this.props.setUser;
         _this.handleInput = _this.handleInput.bind(_this);
         _this.state = {
             username: ''
@@ -55279,6 +55309,11 @@ var SignInModal = function (_Component) {
     _createClass(SignInModal, [{
         key: 'handleInput',
         value: function handleInput(e) {
+            if (e.key == 'Enter') {
+                this.setClientUsername(e.target.value);
+                styles.signInModal = { display: 'none' };
+                return 0;
+            }
             this.setState({ username: e.target.value });
         }
     }, {

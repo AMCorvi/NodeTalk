@@ -3,10 +3,10 @@ import React, { Component } from "react";
 
 // Component Styles
 
-let mainColor = '#1A1C2B',
-    accentColor = '#F50057';
+const   mainColor = '#1A1C2B',
+        accentColor = '#F50057';
 
-let styles = {
+const styles = {
         
         signInModal: {
             alignItems: 'center',
@@ -28,8 +28,6 @@ let styles = {
             outline: "none",
             textAlign: 'center',
             width: '50%'
-
-            
         }   
 }
 
@@ -38,6 +36,7 @@ export default class SignInModal extends Component {
 
     constructor(props,context){
         super(props,context)
+        this.setClientUsername = this.props.setUser;
         this.handleInput = this.handleInput.bind(this);
         this.state = {
             username: ''
@@ -46,6 +45,11 @@ export default class SignInModal extends Component {
     }// end of contructor_function
 
     handleInput(e){
+        if(e.key == 'Enter'){
+            this.setClientUsername(e.target.value);
+            styles.signInModal = {display: 'none'};
+            return 0
+        }
        this.setState({username: e.target.value}) 
     }
 

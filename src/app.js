@@ -22,17 +22,20 @@ class App extends Component {
 
     constructor(){
         super()
+        this.setClientUsername = this.setClientUsername.bind(this);
         this.state = {
             clientUser:''
         }
     }
 
-
+    setClientUsername(username){
+        this.setState( {clientUser: username } )
+    }
     render (){
         return (
 
             <div style={styles.app}>
-                <SignInModal clientuser={this.state.clientUser} />
+                <SignInModal setUser={this.setClientUsername} />
                 <UserWindow clientuser={this.state.clientUser} style={styles.userWindow} />
                 <ChatRoom  clientuser={this.state.clientUser} style={styles.chatRoom} />
             </div>

@@ -10,9 +10,9 @@ module.exports = {
         sourceMapFilename: "build/bundle.map"
 	},
     devtool: '#source-map',	
-	// plugins: [
- //    	new webpack.optimize.UglifyJsPlugin({minimize: true}),
-	// ],	
+    // plugins: [
+    //     new webpack.optimize.UglifyJsPlugin({minimize: true}),
+    // ],
 	module: {
 		loaders: [
 			{

@@ -122,6 +122,7 @@ let styles = {
             fontSize: '1em',
             fontWeight: '100',
             height: 68,
+            margin: 0,
             textAlign: 'center',
             verticalAlign: 'center'
         },
@@ -132,10 +133,11 @@ let styles = {
             flex: '1 20%',
             fontFamily: ' "Roboto" , san-serif ',
             fontSize: '1em',
-            height: 70
+            height: 70,
+            margin: 0
         }
 
-}
+}// end of 'style' object
 
 
 export default class ChatRoom extends Component {
@@ -147,11 +149,16 @@ export default class ChatRoom extends Component {
         this.scrollToLastMessage = this.scrollToLastMessage.bind(this);
         this.messageList = document.getElementsByClassName('messagesList');
         this.state =  {
-            currentUser: "AMCorvi", 
+            currentUser: '', 
             currentUserMessage: '',
             messages: {}  
         }
     }
+
+
+
+
+
 
    
     componentDidMount(){
@@ -165,16 +172,30 @@ export default class ChatRoom extends Component {
                 })
             }
         })
-    }
+    }// end of  componentDidMount_function
+
+
+
+
+
+
+    componentWillReceiveProps(nextprops){
+        this.state.currentUser === nextprops ? null : this.setState({currentUser: nextprops.clientuser})
+    }// end of componentWillReceiveProps_function
+
+
+
+
+
 
     postMessage(e){
         
-        if (e.target.value != '' && e.key === 'Enter'){
+        if (e.target.value != "" && ( e.key == 'Enter' || e.button == 0)){
 
 
 
 
-
+            // Package new message in variable in order to post
              const newMessage = {
                                   id: ( _.size(this.state.messages) + 1 ),
                                   user: this.state.currentUser,
@@ -182,6 +203,11 @@ export default class ChatRoom extends Component {
                                   text: e.target.value
                                 }
 
+
+            // Remove text from inputfield
+            e.target.value = "" ;
+            
+            //Post Message to Real-time Database
             firebase.database().ref(`messages/${newMessage.time}-${newMessage.user}`).set(newMessage) 
 
 
@@ -197,11 +223,21 @@ export default class ChatRoom extends Component {
             //                     }
             // )
 
-
+            //Scroll new message into view
             this.scrollToLastMessage();
-            e.target.value  = ""
+            
+            // Remove residule space or carriage return from input field
+            var inputTag = document.getElementsByClassName('userMessageInput');
+            inputTag[0].value = "" ; 
+
+
         }//end of if_block 
     }// end of postMessage_function 
+
+
+
+
+
     
     retrieveMessages(){
        let messages = _.map( this.state.messages,
@@ -235,13 +271,21 @@ export default class ChatRoom extends Component {
 
         return messages
     } // end of retrieveMessage_function
+
+
+
+
+
     
     scrollToLastMessage(){
             
             let messageWindowElement = document.getElementsByClassName('messagesList')
             let messageWindowHeight = messageWindowElement[0].scrollHeight + 1000000;
             messageWindowElement[0].scrollTop = messageWindowHeight;
-        }
+        }// end of scrollToLastMessage_function
+
+
+
 
     render(){
 
@@ -264,7 +308,7 @@ export default class ChatRoom extends Component {
 
                 <div className='userMessageInputGroup'  style={styles.userMessageInputGroup}>
                     
-                    <textarea
+                    <input
                         className='userMessageInput' style={styles.userMessageInput} type="text"
                         placeholder="Type your message here 😎" 
                         onKeyPress={this.postMessage}
@@ -272,7 +316,7 @@ export default class ChatRoom extends Component {
 
 
 
-                    <button className='userMessageSubmit' style={styles.userMessageSubmit}>Send</button>
+                    <button className='userMessageSubmit' style={styles.userMessageSubmit} onClick={this.postMessage}>Send</button>
 
                 </div>
 
