@@ -157,25 +157,50 @@ export default class ChatRoom extends Component {
     }
 
    
+    componentDidMount(){
+        console.log('componentDidMount')
+        firebase.database().ref('messages/').on('value', (snapshot)=> {
+            const currentMessages = snapshot.val()
+
+            if (currentMessages != null){
+                this.setState({
+                    messages: currentMessages
+                })
+            }
+        })
+    }
 
     postMessage(e){
         
-        // console.log(e.target.value);
-        // console.log( this.state.messages, this.state.currentUserMessage )
-
         if (e.target.value != '' && e.key === 'Enter'){
-            console.log(e.key, e.target.value)
-            this.setState( { messages: [
-                                            ...this.state.messages,
-                                            {
-                                                id: (this.state.messages.length + 1 ),
-                                                user: this.state.currentUser,
-                                                time: Date.now(),
-                                                text: e.target.value
-                                            }
-                                       ] 
+
+
+
+
+
+             const newMessage = {
+                                  id: (this.state.messages.length + 1 ),
+                                  user: this.state.currentUser,
+                                  time: Date.now(),
+                                  text: e.target.value
                                 }
-            )
+
+
+
+            firebase.database().ref('messages/'+ newMessage.id).set(newMessage)
+
+
+            // this.setState( { messages: [
+            //                                 ...this.state.messages,
+            //                                 {
+            //                                     id: (this.state.messages.length + 1 ),
+            //                                     user: this.state.currentUser,
+            //                                     time: Date.now(),
+            //                                     text: e.target.value
+            //                                 }
+            //                            ]
+            //                     }
+            // )
 
 
             this.scrollToLastMessage();

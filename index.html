@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <title></title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i|Ubuntu" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/3.7.6/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAhYImR87niWp7-hhBckisrfv1us4b9D78",
+        authDomain: "nodetalk.firebaseapp.com",
+        databaseURL: "https://nodetalk.firebaseio.com",
+        projectId: "nodetalk",
+        storageBucket: "nodetalk.appspot.com",
+        messagingSenderId: "400797870003"
+      };
+      firebase.initializeApp(config);
+    </script>
 </head>
 <body>
 
@@ -14,7 +27,6 @@
     <div id='app'> </div> 
 
     <script src="build/bundle.js"></script>
-    
 </body>
 
 </html>

@@ -62,6 +62,7 @@ import React, {Component} from 'react';
                 }
         }
 
+
         retrieveListOfUsers(){
             let user = this.state.users.map( (elem, index) => {
                 return (
