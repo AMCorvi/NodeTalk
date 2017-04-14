@@ -5,7 +5,7 @@ import moment from 'moment';
 //Component Styling
 
 let mainColor = '#1A1C2B',
-    accentColor = '#1F2130';
+    accentColor = '#F50057';
 
 let styles = {
 

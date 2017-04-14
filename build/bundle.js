@@ -25029,7 +25029,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //Component Styling
 
 var mainColor = '#1A1C2B',
-    accentColor = '#1F2130';
+    accentColor = '#F50057';
 
 var styles = {
 
@@ -25516,6 +25516,10 @@ var _userwindow = __webpack_require__(197);
 
 var _userwindow2 = _interopRequireDefault(_userwindow);
 
+var _signin_modal = __webpack_require__(300);
+
+var _signin_modal2 = _interopRequireDefault(_signin_modal);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25543,7 +25547,12 @@ var App = function (_Component) {
     function App() {
         _classCallCheck(this, App);
 
-        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
+
+        _this.state = {
+            clientUser: ''
+        };
+        return _this;
     }
 
     _createClass(App, [{
@@ -25552,8 +25561,9 @@ var App = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { style: styles.app },
-                _react2.default.createElement(_userwindow2.default, { style: styles.userWindow }),
-                _react2.default.createElement(_chatroom2.default, { style: styles.chatRoom })
+                _react2.default.createElement(_signin_modal2.default, { clientuser: this.state.clientUser }),
+                _react2.default.createElement(_userwindow2.default, { clientuser: this.state.clientUser, style: styles.userWindow }),
+                _react2.default.createElement(_chatroom2.default, { clientuser: this.state.clientUser, style: styles.chatRoom })
             );
         }
     }]);
@@ -55193,6 +55203,99 @@ module.exports = function(module) {
 }.call(this));
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(297), __webpack_require__(298)(module)))
+
+/***/ }),
+/* 300 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(32);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// Component Styles
+
+var mainColor = '#1A1C2B',
+    accentColor = '#F50057';
+
+var styles = {
+
+    signInModal: {
+        alignItems: 'center',
+        background: mainColor,
+        display: 'flex',
+        height: '100vh',
+        justifyContent: 'center',
+        opacity: '.95',
+        position: 'absolute',
+        width: '100vw',
+        zIndex: 1
+    },
+    usernameInput: {
+        background: 'transparent',
+        border: 'none',
+        borderBottom: '1px solid ' + accentColor,
+        color: accentColor,
+        fontSize: '4em',
+        outline: "none",
+        textAlign: 'center',
+        width: '50%'
+
+    }
+};
+
+var SignInModal = function (_Component) {
+    _inherits(SignInModal, _Component);
+
+    function SignInModal(props, context) {
+        _classCallCheck(this, SignInModal);
+
+        var _this = _possibleConstructorReturn(this, (SignInModal.__proto__ || Object.getPrototypeOf(SignInModal)).call(this, props, context));
+
+        _this.handleInput = _this.handleInput.bind(_this);
+        _this.state = {
+            username: ''
+        };
+
+        return _this;
+    } // end of contructor_function
+
+    _createClass(SignInModal, [{
+        key: 'handleInput',
+        value: function handleInput(e) {
+            this.setState({ username: e.target.value });
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                { className: 'signInModal', style: styles.signInModal },
+                _react2.default.createElement('input', { onKeyPress: this.handleInput, className: 'usernameInput', style: styles.usernameInput, placeholder: 'UserName' })
+            );
+        }
+    }]);
+
+    return SignInModal;
+}(_react.Component);
+
+exports.default = SignInModal;
 
 /***/ })
 /******/ ]);
