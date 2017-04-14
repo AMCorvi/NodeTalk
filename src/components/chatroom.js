@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as _ from 'lodash'
 import moment from 'moment';
 
 //Component Styling
@@ -148,11 +149,7 @@ export default class ChatRoom extends Component {
         this.state =  {
             currentUser: "AMCorvi", 
             currentUserMessage: '',
-            messages: [
-                {id:1, user:"Kyle",  time: Date.now(), text: 'first message'},
-                {id:2, user:"Cartman's Mom", time:  Date.now(), text: 'second message'},
-                {id:3, user:"AMCorvi", time: Date.now(), text: 'third message'},
-            ]
+            messages: {}  
         }
     }
 
@@ -179,15 +176,13 @@ export default class ChatRoom extends Component {
 
 
              const newMessage = {
-                                  id: (this.state.messages.length + 1 ),
+                                  id: ( _.size(this.state.messages) + 1 ),
                                   user: this.state.currentUser,
                                   time: Date.now(),
                                   text: e.target.value
                                 }
 
-
-
-            firebase.database().ref('messages/'+ newMessage.id).set(newMessage)
+            firebase.database().ref(`messages/${newMessage.time}-${newMessage.user}`).set(newMessage) 
 
 
             // this.setState( { messages: [
@@ -204,16 +199,17 @@ export default class ChatRoom extends Component {
 
 
             this.scrollToLastMessage();
-            return e.target.value  = ""
+            e.target.value  = ""
         }//end of if_block 
     }// end of postMessage_function 
     
     retrieveMessages(){
-       let messages = this.state.messages.map(
-            (elem, index)=>{
+       let messages = _.map( this.state.messages,
+            (elem)=>{
+
                 if (elem.user == this.state.currentUser){
                     return (
-                        <div className='messageGroup' key={index} style={styles.messageGroup}>
+                        <div className='messageGroup' key={elem.id} style={styles.messageGroup}>
                             <div className="messageUser" style={styles.messageUserOutgoing}> {elem.user} </div>
                             <div className="messageOutgoing" style={styles.messageOutgoing} >
                                 {elem.text}
@@ -221,9 +217,11 @@ export default class ChatRoom extends Component {
                             <div className="messageTime" style={ styles.messageTimeOutgoing}> {moment( elem.time ).fromNow()} </div>
                         </div>
                     )
-                } else{
+                } 
+
+                else {
                     return (
-                        <div className="messageGroup" key={index} style={styles.messageGroup}>
+                        <div className="messageGroup" key={elem.id} style={styles.messageGroup}>
                             <div className="messageUser" style={styles.messageUserIncoming}> {elem.user} </div>
                             <div className="messageIncoming" style={styles.messageIncoming} >
                                 {elem.text}
