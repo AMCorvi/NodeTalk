@@ -25259,7 +25259,7 @@ var ChatRoom = function (_Component) {
                     });
                 }
             });
-        } // end of  componentDidMount_function
+        } // end of componentDidMount_function
 
 
     }, {
@@ -25273,7 +25273,9 @@ var ChatRoom = function (_Component) {
         key: 'postMessage',
         value: function postMessage(e) {
 
-            if (e.target.value != "" && (e.key == 'Enter' || e.button == 0)) {
+            var messageField = document.querySelector('.userMessageInput');
+            var emptySpaces = new RegExp(/\S+/);
+            if (messageField.value != "" && messageField.value.match(emptySpaces) && (e.key == 'Enter' || e.button == 0)) {
 
                 // Package new message in variable in order to post
                 var newMessage = {
@@ -25507,7 +25509,8 @@ var SignInModal = function (_Component) {
     _createClass(SignInModal, [{
         key: 'handleInput',
         value: function handleInput(e) {
-            if (e.key == 'Enter') {
+            var emptySpaces = new RegExp(/^\s+/, 'g');
+            if (e.key == 'Enter' && e.target.value != '' && !e.target.value.match(emptySpaces)) {
                 this.setClientUsername(e.target.value);
                 styles.signInModal = { display: 'none' };
                 return 0;

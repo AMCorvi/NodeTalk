@@ -45,7 +45,8 @@ export default class SignInModal extends Component {
     }// end of contructor_function
 
     handleInput(e){
-        if(e.key == 'Enter' ){
+        let emptySpaces = new RegExp(/^\s+/, 'g')
+        if(e.key == 'Enter' && e.target.value != '' && !e.target.value.match(emptySpaces)){
             this.setClientUsername(e.target.value);
             styles.signInModal = {display: 'none'};
             return 0

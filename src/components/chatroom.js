@@ -177,7 +177,7 @@ export default class ChatRoom extends Component {
                 })
             }
         })
-    }// end of  componentDidMount_function
+    }// end of componentDidMount_function
 
 
 
@@ -195,7 +195,9 @@ export default class ChatRoom extends Component {
 
     postMessage(e){
         
-        if (e.target.value != "" && ( e.key == 'Enter' || e.button == 0)){
+        let messageField = document.querySelector('.userMessageInput');
+        let emptySpaces = new RegExp(/\S+/);
+        if (( messageField.value != "" && messageField.value.match(emptySpaces) ) && ( e.key == 'Enter' || e.button == 0)){
 
 
 
