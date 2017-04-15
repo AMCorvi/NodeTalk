@@ -12,7 +12,7 @@ const styles = {
             alignItems: 'center',
             background: mainColor,
             display: 'flex',
-            height: '100vh',
+            height: '100%',
             justifyContent: 'center',
             opacity: '.95',
             position: 'absolute',
@@ -45,7 +45,7 @@ export default class SignInModal extends Component {
     }// end of contructor_function
 
     handleInput(e){
-        if(e.key == 'Enter'){
+        if(e.key == 'Enter' ){
             this.setClientUsername(e.target.value);
             styles.signInModal = {display: 'none'};
             return 0

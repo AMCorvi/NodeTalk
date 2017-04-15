@@ -19,7 +19,10 @@ let styles = {
             width: '75%'
         },
         chatStatusBar:{
-            background: 'rgba(26, 28, 43, 0.9)',
+            background: 'rgba(26, 28, 43, 0.97)',
+            border: '2px groove ' + mainColor,
+            borderLeft: 'none',
+            borderRight: 'none',
             boxShadow: '1px -30px 60px 0.1px white',
             color: 'chartreuse',
             display: 'flex',
@@ -32,14 +35,16 @@ let styles = {
             
         },
         statusBlur: {
-            filter: 'blur(5px)',
+            // background: mainColor,
+            // filter: 'blur(5px)',
             height: '100%',
-            position: 'absolute',
+            // opacity:  '.6',
+            position: 'relative',
             width: '100%',
         },
         statusMessage: {
             left: '35%',
-            position: 'absolute'
+            position: 'absolute',
         },
         messagesList: {
             alignItems: 'space-around',

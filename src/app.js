@@ -11,9 +11,9 @@ let styles = {
         app: {
                 display: 'flex',
                 fontFamily: ` 'Ubuntu', sans-serif `,
-                height: "100%",
+                height: "100vh",
                 margin: '0',
-                width: "100%"
+                width: "100vw"
              }
 }
 

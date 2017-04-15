@@ -25098,7 +25098,10 @@ var styles = {
         width: '75%'
     },
     chatStatusBar: {
-        background: 'rgba(26, 28, 43, 0.9)',
+        background: 'rgba(26, 28, 43, 0.97)',
+        border: '2px groove ' + mainColor,
+        borderLeft: 'none',
+        borderRight: 'none',
         boxShadow: '1px -30px 60px 0.1px white',
         color: 'chartreuse',
         display: 'flex',
@@ -25111,9 +25114,11 @@ var styles = {
 
     },
     statusBlur: {
-        filter: 'blur(5px)',
+        // background: mainColor,
+        // filter: 'blur(5px)',
         height: '100%',
-        position: 'absolute',
+        // opacity:  '.6',
+        position: 'relative',
         width: '100%'
     },
     statusMessage: {
@@ -25463,7 +25468,7 @@ var styles = {
         alignItems: 'center',
         background: mainColor,
         display: 'flex',
-        height: '100vh',
+        height: '100%',
         justifyContent: 'center',
         opacity: '.95',
         position: 'absolute',
@@ -25556,6 +25561,17 @@ var mainColor = "#1A1C2B",
     accentColor = "#F50057";
 
 var styles = {
+    currentUser: {
+        alignItems: 'center',
+        background: mainColor,
+        color: accentColor,
+        borderBottom: '1px solid #f2f2f2',
+        display: "flex",
+        fontSize: '.9em',
+        justifyContent: 'center',
+        // borderTop: '1px solid grey',
+        padding: '10px'
+    },
     userWindowContainer: {
         display: 'flex',
         flex: '1 0 25%',
@@ -25566,6 +25582,9 @@ var styles = {
     titleBar: {
         alignItems: 'center',
         background: '#F50057',
+        border: '2px groove ' + accentColor,
+        borderLeft: 'none',
+        borderRight: 'none',
         color: 'white',
         display: 'flex',
         flex: '100%',
@@ -25575,8 +25594,8 @@ var styles = {
         width: '25%'
     },
     userList: {
-        // background: 'white',
-        // height: '100vh',
+        background: 'white',
+        height: '100vh',
         marginTop: 55,
         overflow: 'scroll'
     },
@@ -25609,29 +25628,74 @@ var UserWindow = function (_Component) {
 
         _this.retrieveListofUsers = _this.retrieveListOfUsers.bind(_this);
         _this.state = {
-            users: ['AMCorvi', "Cartman's Mom", 'Stan', 'Kyle', 'Kenny', 'Cartman', 'AMCorvi', "Cartman's Mom", 'Stan', 'Kyle', 'AMCorvi', "Cartman's Mom", 'Stan', 'Kyle']
+            currentUser: 'Cartman',
+            users: ['AMCorvi', "Cartman's Mom", 'Stan', 'Kyle', 'Kenny', 'Cartman']
         };
         return _this;
-    }
+    } //end of contructor
 
     _createClass(UserWindow, [{
+        key: "componentWillReceiveProps",
+        value: function componentWillReceiveProps(nextProps) {
+            // When and if client user prop is received set it as currenUser in state causing re-render
+            !nextProps ? null : this.setState({
+                currentUser: nextProps.clientuser
+            });
+        } // end of componentWillReceiveProps_method
+
+
+        //
+        // labelCurrentUser(elem){
+        //   if (elem) {
+        //       return(
+        //             <div className="currentUser" key={1} style={styles.currentUser}>
+        //                 <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem}`} alt=""/>
+        //                 <div className='userName' style={styles.userName}>{this.state.currentUser}</div>
+        //             </div>
+        //
+        //       )
+        //   }
+        // }
+
+    }, {
         key: "retrieveListOfUsers",
         value: function retrieveListOfUsers() {
+            var _this2 = this;
+
+            //--- create divs for all user in chat 
             var user = this.state.users.map(function (elem, index) {
-                return _react2.default.createElement(
-                    "div",
-                    { className: "user", key: index, style: styles.user },
-                    _react2.default.createElement("img", { className: "userIMG", style: styles.userIMG, src: "http://i.pravatar.cc/40?u=" + elem, alt: "" }),
-                    _react2.default.createElement(
+
+                // When parsing thru list of users if current username match the name of current user skip if else create user div
+                if (elem == _this2.state.currentUser) {
+                    return _react2.default.createElement(
                         "div",
-                        { className: "userName", style: styles.userName },
-                        elem
-                    )
-                );
+                        { className: "currentUser", key: 'currentuser', style: styles.currentUser },
+                        _react2.default.createElement("img", { className: "userIMG", style: styles.userIMG, src: "http://i.pravatar.cc/40?u=" + elem, alt: "" }),
+                        _react2.default.createElement(
+                            "div",
+                            { className: "userName", style: styles.userName },
+                            _this2.state.currentUser
+                        )
+                    );
+                } else {
+
+                    return _react2.default.createElement(
+                        "div",
+                        { className: "user", key: index, style: styles.user },
+                        _react2.default.createElement("img", { className: "userIMG", style: styles.userIMG, src: "http://i.pravatar.cc/40?u=" + elem, alt: "" }),
+                        _react2.default.createElement(
+                            "div",
+                            { className: "userName", style: styles.userName },
+                            elem
+                        )
+                    );
+                }
             });
 
             return user;
-        }
+            forceUpdate();
+        } // end of retriveListofUser_method
+
     }, {
         key: "render",
         value: function render() {
@@ -25712,9 +25776,9 @@ var styles = {
     app: {
         display: 'flex',
         fontFamily: ' \'Ubuntu\', sans-serif ',
-        height: "100%",
+        height: "100vh",
         margin: '0',
-        width: "100%"
+        width: "100vw"
     }
 };
 
