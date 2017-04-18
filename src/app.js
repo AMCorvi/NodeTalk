@@ -29,6 +29,17 @@ class App extends Component {
     }
 
     setClientUsername(username){
+        
+        //write user entry in the '/user' database endpoint
+        firebase.database().ref('/users').child(username.toLowerCase()).set(
+            {
+               'username': username,
+               'lastupdate': Date.now(),
+               'connected': true
+            }
+        )
+
+        //write user to state
         this.setState( {clientUser: username } )
     }
     render (){

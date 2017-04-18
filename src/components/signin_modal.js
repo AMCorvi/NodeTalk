@@ -45,6 +45,7 @@ export default class SignInModal extends Component {
     }// end of contructor_function
 
     handleInput(e){
+        // RegEx to check for text field with no characters
         let emptySpaces = new RegExp(/^\s+/, 'g')
         if(e.key == 'Enter' && e.target.value != '' && !e.target.value.match(emptySpaces)){
             this.setClientUsername(e.target.value);

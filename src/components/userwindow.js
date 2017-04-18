@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import _ from 'lodash';
 
 
 
@@ -72,13 +73,26 @@ import React, {Component} from 'react';
 
         constructor(props, context){
             super(props)
-            this.retrieveListofUsers = this.retrieveListOfUsers.bind(this);
+            this.createListofUsers = this.createListOfUsers.bind(this);
+            this.updateUserList = this.updateUserList().bind(this);
             this.state = {
-                    currentUser: 'Cartman',
-                    users: ['AMCorvi', "Cartman's Mom", 'Stan', 'Kyle', 'Kenny', 'Cartman' ]
+                    currentUser: '',
+                    users: {}
                 }
         }//end of contructor
 
+
+
+
+        componentDidMount() {
+
+            this.updateUserList(); // see method in this class                
+
+        }// end of componentDidMount_method
+
+
+
+    
         componentWillReceiveProps(nextProps) {
             // When and if client user prop is received set it as currenUser in state causing re-render
             !nextProps ? null : this.setState({
@@ -90,28 +104,16 @@ import React, {Component} from 'react';
 
 
 
-
-        //
-        // labelCurrentUser(elem){
-        //   if (elem) {
-        //       return(
-        //             <div className="currentUser" key={1} style={styles.currentUser}>
-        //                 <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem}`} alt=""/>
-        //                 <div className='userName' style={styles.userName}>{this.state.currentUser}</div>
-        //             </div>
-        //
-        //       )
-        //   }
-        // }
-
-        retrieveListOfUsers(){
-            //--- create divs for all user in chat 
-            let user = this.state.users.map( (elem, index) => {
-                   
+        //--- create divs for all user in chat 
+        createListOfUsers(){
+            
+            let check = 0
+            let user = _.map( this.state.users, (elem) => {
+                  console.log(elem.username.toLowerCase(), check = check + 1) 
                   // When parsing thru list of users if current username match the name of current user skip if else create user div
-                    if (elem == this.state.currentUser) {
+                    if (elem.username.toLowerCase == this.state.currentUser.toLowerCase) {
                         return (
-                                <div className="currentUser" key={'currentuser'} style={styles.currentUser}>
+                                <div className="currentUser" key={elem.username} style={styles.currentUser}>
                                     <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem}`} alt=""/>
                                     <div className='userName' style={styles.userName}>{this.state.currentUser}</div>
                                 </div>
@@ -119,9 +121,9 @@ import React, {Component} from 'react';
                     } else {
 
                             return (
-                                <div className="user" key={index} style={styles.user}>
+                                <div className="user" key={elem.username} style={styles.user}>
                                     <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem}`} alt=""/>
-                                    <div className='userName' style={styles.userName}>{elem}</div>
+                                    <div className='userName' style={styles.userName}>{elem.username}</div>
                                 </div>
                            )
                         }
@@ -132,6 +134,25 @@ import React, {Component} from 'react';
             forceUpdate();
         }// end of retriveListofUser_method
 
+
+
+        //--- update user list up changes to '/users' database endpoint
+        
+        updateUserList(){
+
+          return   firebase.database().ref('/users').on('value', snapshot => {
+                this.setState({
+                    users: snapshot.val()
+                });
+                // console.log(typeof(snapshot.val()))
+                // console.log((typeof(snapshot.val()) == 'object' )? snapshot.val() : {empty:" Nothing yet"});
+            })
+
+        }// end of updateUserList_methhod
+
+
+
+
         render(){
             
             return (
@@ -140,7 +161,7 @@ import React, {Component} from 'react';
                                 nodeTalk
                           </div>                                              
                           <div className="userList" style={styles.userList} >
-                         {this.retrieveListOfUsers()} 
+                         {this.createListOfUsers()} 
                       </div>
                 </div>
         )

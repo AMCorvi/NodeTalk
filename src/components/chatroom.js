@@ -165,9 +165,9 @@ export default class ChatRoom extends Component {
 
 
 
-   
+    // Upon change in value of '/message' endpoint in database update message object in state
     componentDidMount(){
-        console.log('componentDidMount')
+        // retrieve messages from database
         firebase.database().ref('messages/').on('value', (snapshot)=> {
             const currentMessages = snapshot.val()
 
@@ -183,7 +183,7 @@ export default class ChatRoom extends Component {
 
 
 
-
+    // Recieve username from 'SignInModal.js' and set it to the currentUser key in state
     componentWillReceiveProps(nextprops){
         this.state.currentUser === nextprops ? null : this.setState({currentUser: nextprops.clientuser})
     }// end of componentWillReceiveProps_function
@@ -192,12 +192,12 @@ export default class ChatRoom extends Component {
 
 
 
-
+    // Method to post message to database 
     postMessage(e){
         
         let messageField = document.querySelector('.userMessageInput');
         let emptySpaces = new RegExp(/\S+/);
-        if (( messageField.value != "" && messageField.value.match(emptySpaces) ) && ( e.key == 'Enter' || e.button == 0)){
+        if (( messageField.value != "" && messageField.value.match(emptySpaces) ) && ( e.key == 'Enter' || e.button == 0)) {
 
 
 
