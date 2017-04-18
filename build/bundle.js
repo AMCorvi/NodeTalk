@@ -42372,6 +42372,7 @@ var ChatRoom = function (_Component) {
         key: 'postMessage',
         value: function postMessage(e) {
 
+            console.log('inside Post Message method');
             var messageField = document.querySelector('.userMessageInput');
             var emptySpaces = new RegExp(/\S+/);
             if (messageField.value != "" && messageField.value.match(emptySpaces) && (e.key == 'Enter' || e.button == 0)) {
@@ -42389,18 +42390,6 @@ var ChatRoom = function (_Component) {
 
                 //Post Message to Real-time Database
                 firebase.database().ref('messages/' + newMessage.time + '-' + newMessage.user).set(newMessage);
-
-                // this.setState( { messages: [
-                //                                 ...this.state.messages,
-                //                                 {
-                //                                     id: (this.state.messages.length + 1 ),
-                //                                     user: this.state.currentUser,
-                //                                     time: Date.now(),
-                //                                     text: e.target.value
-                //                                 }
-                //                            ]
-                //                     }
-                // )
 
                 //Scroll new message into view
                 this.scrollToLastMessage();
@@ -42768,15 +42757,13 @@ var UserWindow = function (_Component) {
         value: function createListOfUsers() {
             var _this2 = this;
 
-            var check = 0;
             var user = _lodash2.default.map(this.state.users, function (elem) {
-                console.log(elem.username.toLowerCase(), check = check + 1);
                 // When parsing thru list of users if current username match the name of current user skip if else create user div
-                if (elem.username.toLowerCase == _this2.state.currentUser.toLowerCase) {
+                if (elem.username.toLowerCase() == _this2.state.currentUser.toLowerCase()) {
                     return _react2.default.createElement(
                         'div',
                         { className: 'currentUser', key: elem.username, style: styles.currentUser },
-                        _react2.default.createElement('img', { className: 'userIMG', style: styles.userIMG, src: 'http://i.pravatar.cc/40?u=' + elem, alt: '' }),
+                        _react2.default.createElement('img', { className: 'userIMG', style: styles.userIMG, src: 'http://i.pravatar.cc/40?u=' + elem.username.toLowerCase(), alt: '' }),
                         _react2.default.createElement(
                             'div',
                             { className: 'userName', style: styles.userName },
@@ -42788,7 +42775,7 @@ var UserWindow = function (_Component) {
                     return _react2.default.createElement(
                         'div',
                         { className: 'user', key: elem.username, style: styles.user },
-                        _react2.default.createElement('img', { className: 'userIMG', style: styles.userIMG, src: 'http://i.pravatar.cc/40?u=' + elem, alt: '' }),
+                        _react2.default.createElement('img', { className: 'userIMG', style: styles.userIMG, src: 'http://i.pravatar.cc/40?u=' + elem.username.toLowerCase(), alt: '' }),
                         _react2.default.createElement(
                             'div',
                             { className: 'userName', style: styles.userName },
@@ -42812,10 +42799,8 @@ var UserWindow = function (_Component) {
 
             return firebase.database().ref('/users').on('value', function (snapshot) {
                 _this3.setState({
-                    users: snapshot.val()
+                    users: snapshot ? snapshot.val() : Object
                 });
-                // console.log(typeof(snapshot.val()))
-                // console.log((typeof(snapshot.val()) == 'object' )? snapshot.val() : {empty:" Nothing yet"});
             });
         } // end of updateUserList_methhod
 
@@ -42926,7 +42911,7 @@ var App = function (_Component) {
         value: function setClientUsername(username) {
 
             //write user entry in the '/user' database endpoint
-            firebase.database().ref('/users').child(username.toLowerCase()).set({
+            firebase.database().ref('/users').child(username.toLowerCase()).update({
                 'username': username,
                 'lastupdate': Date.now(),
                 'connected': true

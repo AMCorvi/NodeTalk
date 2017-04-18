@@ -195,6 +195,7 @@ export default class ChatRoom extends Component {
     // Method to post message to database 
     postMessage(e){
         
+        console.log('inside Post Message method');
         let messageField = document.querySelector('.userMessageInput');
         let emptySpaces = new RegExp(/\S+/);
         if (( messageField.value != "" && messageField.value.match(emptySpaces) ) && ( e.key == 'Enter' || e.button == 0)) {
@@ -216,19 +217,6 @@ export default class ChatRoom extends Component {
             
             //Post Message to Real-time Database
             firebase.database().ref(`messages/${newMessage.time}-${newMessage.user}`).set(newMessage) 
-
-
-            // this.setState( { messages: [
-            //                                 ...this.state.messages,
-            //                                 {
-            //                                     id: (this.state.messages.length + 1 ),
-            //                                     user: this.state.currentUser,
-            //                                     time: Date.now(),
-            //                                     text: e.target.value
-            //                                 }
-            //                            ]
-            //                     }
-            // )
 
             //Scroll new message into view
             this.scrollToLastMessage();

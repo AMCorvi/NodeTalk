@@ -107,14 +107,12 @@ import _ from 'lodash';
         //--- create divs for all user in chat 
         createListOfUsers(){
             
-            let check = 0
             let user = _.map( this.state.users, (elem) => {
-                  console.log(elem.username.toLowerCase(), check = check + 1) 
                   // When parsing thru list of users if current username match the name of current user skip if else create user div
-                    if (elem.username.toLowerCase == this.state.currentUser.toLowerCase) {
+                    if (elem.username.toLowerCase() == this.state.currentUser.toLowerCase()) {
                         return (
                                 <div className="currentUser" key={elem.username} style={styles.currentUser}>
-                                    <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem}`} alt=""/>
+                                    <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem.username.toLowerCase()}`} alt=""/>
                                     <div className='userName' style={styles.userName}>{this.state.currentUser}</div>
                                 </div>
                         )
@@ -122,7 +120,7 @@ import _ from 'lodash';
 
                             return (
                                 <div className="user" key={elem.username} style={styles.user}>
-                                    <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem}`} alt=""/>
+                                    <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem.username.toLowerCase()}`} alt=""/>
                                     <div className='userName' style={styles.userName}>{elem.username}</div>
                                 </div>
                            )
@@ -139,13 +137,12 @@ import _ from 'lodash';
         //--- update user list up changes to '/users' database endpoint
         
         updateUserList(){
+        
 
           return   firebase.database().ref('/users').on('value', snapshot => {
                 this.setState({
-                    users: snapshot.val()
+                    users: (snapshot) ? snapshot.val() : Object
                 });
-                // console.log(typeof(snapshot.val()))
-                // console.log((typeof(snapshot.val()) == 'object' )? snapshot.val() : {empty:" Nothing yet"});
             })
 
         }// end of updateUserList_methhod
