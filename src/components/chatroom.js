@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import * as _ from 'lodash'
+import * as _ from 'lodash';
 import moment from 'moment';
+import * as firebase from 'firebase';
 
 //Component Styling
 
@@ -195,7 +196,6 @@ export default class ChatRoom extends Component {
     // Method to post message to database 
     postMessage(e){
         
-        console.log('inside Post Message method');
         let messageField = document.querySelector('.userMessageInput');
         let emptySpaces = new RegExp(/\S+/);
         if (( messageField.value != "" && messageField.value.match(emptySpaces) ) && ( e.key == 'Enter' || e.button == 0)) {
@@ -227,15 +227,17 @@ export default class ChatRoom extends Component {
 
 
         }//end of if_block 
-    }// end of postMessage_function 
+   }// end of postMessage_function 
 
 
 
 
 
     
-    retrieveMessages(){
+    retrieveMessages() {
+
        let messages = _.map( this.state.messages,
+
             (elem)=>{
 
                 if (elem.user == this.state.currentUser){
@@ -251,6 +253,7 @@ export default class ChatRoom extends Component {
                 } 
 
                 else {
+
                     return (
                         <div className="messageGroup" key={elem.id} style={styles.messageGroup}>
                             <div className="messageUser" style={styles.messageUserIncoming}> {elem.user} </div>
@@ -259,6 +262,7 @@ export default class ChatRoom extends Component {
                             </div>
                             <div className="messageTime" style={ styles.messageTimeIncoming}> {moment( elem.time ).fromNow()} </div>
                         </div>
+
                     )
                 }
             }
@@ -275,8 +279,11 @@ export default class ChatRoom extends Component {
     scrollToLastMessage(){
             
             let messageWindowElement = document.getElementsByClassName('messagesList')
+
             let messageWindowHeight = messageWindowElement[0].scrollHeight + 1000000;
+
             messageWindowElement[0].scrollTop = messageWindowHeight;
+
         }// end of scrollToLastMessage_function
 
 
@@ -286,6 +293,7 @@ export default class ChatRoom extends Component {
 
         return ( 
             <div className='chatContainer' style={styles.chatContainer} >
+
                         <div className='chatStatusBar' style={styles.chatStatusBar}>
                             <div className='statusBlur' style={styles.statusBlur}> &nbsp; </div> 
                             <div className='statusMessage' style={styles.statusMessage}> 

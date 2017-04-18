@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-import ReactDom from 'react-dom'
+import ReactDom from 'react-dom';
+import * as firebase from 'firebase';
  
 //External Components
 import ChatRoom from "./components/chatroom.js";
 import UserWindow from "./components/userwindow.js";
 import SignInModal from "./components/signin_modal.js";
 
-
+// Component Styles
 let styles = {
         app: {
                 display: 'flex',
@@ -16,6 +17,19 @@ let styles = {
                 width: "100vw"
              }
 }
+
+
+// Initialize firebase
+
+      const config = {
+        apiKey: "AIzaSyAhYImR87niWp7-hhBckisrfv1us4b9D78",
+        authDomain: "nodetalk.firebaseapp.com",
+        databaseURL: "https://nodetalk.firebaseio.com",
+        projectId: "nodetalk",
+        storageBucket: "nodetalk.appspot.com",
+        messagingSenderId: "400797870003"
+      };
+      firebase.initializeApp(config);
 
 
 class App extends Component {
