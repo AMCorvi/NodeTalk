@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as _ from 'lodash';
 import moment from 'moment';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 
 //Component Styling
 
@@ -46,6 +46,12 @@ let styles = {
         statusMessage: {
             left: '35%',
             position: 'absolute',
+        },
+        logOut: {
+            background: 'none',
+            border: '2px solid tomato', 
+            color: 'tomato',
+            fontSize: '1.1em'
         },
         messagesList: {
             alignItems: 'space-around',
@@ -163,9 +169,6 @@ export default class ChatRoom extends Component {
 
 
 
-
-
-
     // Upon change in value of '/message' endpoint in database update message object in state
     componentDidMount(){
         // retrieve messages from database
@@ -178,6 +181,7 @@ export default class ChatRoom extends Component {
                 })
             }
         })
+
     }// end of componentDidMount_function
 
 
@@ -217,6 +221,9 @@ export default class ChatRoom extends Component {
             
             //Post Message to Real-time Database
             firebase.database().ref(`messages/${newMessage.time}-${newMessage.user}`).set(newMessage) 
+            firebase.database().ref(`users/${this.state.currentUser.toLowerCase()}`).update({
+                lastupdate: Date.now()
+            })
 
             //Scroll new message into view
             this.scrollToLastMessage();
@@ -284,10 +291,17 @@ export default class ChatRoom extends Component {
 
             messageWindowElement[0].scrollTop = messageWindowHeight;
 
-        }// end of scrollToLastMessage_function
+    }// end of scrollToLastMessage_function
 
 
+    signOut() {
+        
+        firebase.auth().signOut() ;  
+        console.log(`we're signed out'`);
+        console.log(`This is the firebase currentUser object: ${firebase.auth().currentUser}`);
 
+            
+     }
 
     render(){
 
@@ -299,6 +313,9 @@ export default class ChatRoom extends Component {
                             <div className='statusMessage' style={styles.statusMessage}> 
                                 • &nbsp;  &nbsp; Connected
                             </div>
+                            <button className="logOut" onClick={this.signOut} style={styles.logOut} >
+                                 Leave Politely...
+                            </button>                         
                         </div>
 
 
