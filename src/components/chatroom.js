@@ -218,6 +218,13 @@ export default class ChatRoom extends Component {
             //Post Message to Real-time Database
             firebase.database().ref(`messages/${newMessage.time}-${newMessage.user}`).set(newMessage) 
 
+            firebase.database().ref('/users').child(this.state.currentUser.toLowerCase()).update(
+                        {
+                           'lastupdate': Date.now()
+                        }
+                    )
+
+
             //Scroll new message into view
             this.scrollToLastMessage();
             

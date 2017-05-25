@@ -35,12 +35,14 @@ let styles = {
 class App extends Component {
 
     constructor(){
+
         super()
         this.setClientUsername = this.setClientUsername.bind(this);
         this.state = {
             clientUser:''
         }
-    }
+
+    } // end of constructor_function
 
     setClientUsername(username){
         
@@ -54,8 +56,9 @@ class App extends Component {
         )
 
         //write user to state
-        this.setState( {clientUser: username } )
-    }
+        this.setState( { clientUser: username } )
+    } // end of setUserClientUsername_function
+
     render (){
         return (
 

@@ -73,6 +73,7 @@ import * as firebase from 'firebase';
 
 
         constructor(props, context){
+
             super(props)
             this.createListofUsers = this.createListOfUsers.bind(this);
             this.updateUserList = this.updateUserList().bind(this);
@@ -80,7 +81,8 @@ import * as firebase from 'firebase';
                     currentUser: '',
                     users: {}
                 }
-        }//end of contructor
+
+        } //end of contructor
 
 
 
@@ -89,18 +91,22 @@ import * as firebase from 'firebase';
 
             this.updateUserList(); // see method in this class                
 
-        }// end of componentDidMount_method
+        } // end of componentDidMount_method
 
 
 
     
         componentWillReceiveProps(nextProps) {
+            
             // When and if client user prop is received set it as currenUser in state causing re-render
             !nextProps ? null : this.setState({
                 currentUser: nextProps.clientuser
             });           
 
-        }// end of componentWillReceiveProps_method
+            !nextProps.clientuser ? null : firebase.database().ref(`/users/${nextProps.clientuser.toLowerCase()}`)
+                .onDisconnect().remove()
+            
+        } // end of componentWillReceiveProps_method
 
 
 
@@ -131,7 +137,8 @@ import * as firebase from 'firebase';
 
             return user;
             forceUpdate();
-        }// end of retriveListofUser_method
+
+        } // end of retriveListofUser_method
 
 
 
@@ -146,7 +153,7 @@ import * as firebase from 'firebase';
                 });
             })
 
-        }// end of updateUserList_methhod
+        } // end of updateUserList_methhod
 
 
 
