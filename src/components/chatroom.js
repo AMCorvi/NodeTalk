@@ -225,6 +225,13 @@ export default class ChatRoom extends Component {
                 lastupdate: Date.now()
             })
 
+            firebase.database().ref('/users').child(this.state.currentUser.toLowerCase()).update(
+                        {
+                           'lastupdate': Date.now()
+                        }
+                    )
+
+
             //Scroll new message into view
             this.scrollToLastMessage();
             

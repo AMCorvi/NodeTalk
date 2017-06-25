@@ -42486,6 +42486,10 @@ var ChatRoom = function (_Component) {
                     lastupdate: Date.now()
                 });
 
+                _firebase2.default.database().ref('/users').child(this.state.currentUser.toLowerCase()).update({
+                    'lastupdate': Date.now()
+                });
+
                 //Scroll new message into view
                 this.scrollToLastMessage();
 
@@ -42708,10 +42712,12 @@ var SignInModal = function (_Component) {
     _createClass(SignInModal, [{
         key: 'handleInput',
         value: function handleInput(e) {
+
             // RegEx to check for text field with no characters
             var emptySpaces = new RegExp(/^\s+/, 'g');
 
             if (e.key == 'Enter' && e.target.value != '' && !e.target.value.match(emptySpaces)) {
+
                 this.setClientUsername(e.target.value);
                 styles.signInModal = { display: 'none' };
                 return 0;
@@ -42848,6 +42854,7 @@ var UserWindow = function (_Component) {
             currentUser: '',
             users: {}
         };
+
         return _this;
     } //end of contructor
 
@@ -42863,10 +42870,13 @@ var UserWindow = function (_Component) {
     }, {
         key: 'componentWillReceiveProps',
         value: function componentWillReceiveProps(nextProps) {
+
             // When and if client user prop is received set it as currenUser in state causing re-render
             !nextProps ? null : this.setState({
                 currentUser: nextProps.clientuser
             });
+
+            !nextProps.clientuser ? null : firebase.database().ref('/users/' + nextProps.clientuser.toLowerCase()).onDisconnect().remove();
         } // end of componentWillReceiveProps_method
 
 
@@ -43051,8 +43061,9 @@ var App = function (_Component) {
             users: {}
 
         };
+
         return _this;
-    }
+    } // end of constructor_function
 
     _createClass(App, [{
         key: 'componentDidMount',
@@ -43121,14 +43132,11 @@ var App = function (_Component) {
             //     clientUser: username,
             // } )
 
-        }
-    }, {
-        key: 'syncUsersToApp',
-        value: function syncUsersToApp(users) {
-            this.setState({
-                "users": users
-            });
-        }
+
+            //write user to state
+            this.setState({ clientUser: username });
+        } // end of setUserClientUsername_function
+
     }, {
         key: 'render',
         value: function render() {

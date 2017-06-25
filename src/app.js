@@ -35,6 +35,7 @@ let styles = {
 class App extends Component {
 
     constructor(){
+
         super()
         this.setClientUsername = this.setClientUsername.bind(this);
         this.syncUsersToApp = this.syncUsersToApp.bind(this);
@@ -45,7 +46,8 @@ class App extends Component {
             
 
         }
-    }
+
+    } // end of constructor_function
 
     componentDidMount() {
             
@@ -119,17 +121,13 @@ class App extends Component {
         // } )
 
 
-    }
-
-
-     syncUsersToApp(users) {
-        this.setState({
-           "users": users
-        });
-     }
 
 
 
+
+        //write user to state
+        this.setState( { clientUser: username } )
+    } // end of setUserClientUsername_function
 
     render (){
         
