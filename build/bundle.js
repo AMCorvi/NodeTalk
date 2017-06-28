@@ -42652,6 +42652,7 @@ var styles = {
         background: mainColor,
         display: 'flex',
         height: '100%',
+        flexDirection: 'column',
         justifyContent: 'center',
         opacity: '.95',
         position: 'absolute',
@@ -42667,7 +42668,11 @@ var styles = {
         outline: "none",
         textAlign: 'center',
         width: '50%'
+    },
+    usernameAdvisory: {
+        textAlign: 'center'
     }
+
 };
 
 var SignInModal = function (_Component) {
@@ -42679,13 +42684,14 @@ var SignInModal = function (_Component) {
         var _this = _possibleConstructorReturn(this, (SignInModal.__proto__ || Object.getPrototypeOf(SignInModal)).call(this, props, context));
 
         _this.setClientUsername = _this.props.setUser;
+        _this.activationStatus = _this.props.activationStatus;
         _this.handleInput = _this.handleInput.bind(_this);
         _this.state = {
-            username: ''
+            username: ""
         };
 
         return _this;
-    } // end of contructor_function
+    } // end of constructor_function
 
     _createClass(SignInModal, [{
         key: 'handleInput',
@@ -42695,8 +42701,18 @@ var SignInModal = function (_Component) {
             var emptySpaces = new RegExp(/^\s+/, 'g');
             if (e.key == 'Enter' && e.target.value != '' && !e.target.value.match(emptySpaces)) {
 
-                this.setClientUsername(e.target.value);
-                styles.signInModal = { display: 'none' };
+                // call setClientUsername method
+                //  - Method will return true and set usernam if name handle is available
+                //  - If handle is not available method will return false value to usernameChoice Method
+                var usernameWasAvailable = this.setClientUsername(e.target.value);
+
+                if (usernameWasAvailable === true) {
+                    styles.signInModal = { display: 'none' };
+                } else {
+                    e.target.value = "";
+                }
+
+                console.log(usernameWasAvailable);
                 return 0;
             }
             this.setState({ username: e.target.value });
@@ -42704,11 +42720,25 @@ var SignInModal = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { className: 'signInModal', style: styles.signInModal },
-                _react2.default.createElement('input', { onKeyPress: this.handleInput, className: 'usernameInput', style: styles.usernameInput, placeholder: 'UserName' })
-            );
+
+            if (this.activationStatus === false) {
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'signInModal', style: styles.signInModal },
+                    _react2.default.createElement('input', { onKeyPress: this.handleInput, className: 'usernameInput', style: styles.usernameInput, placeholder: 'UserName' }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'usernameAdvisory' },
+                        'That Username Is Being Used... But I Believe In Your Creativity'
+                    )
+                );
+            } else {
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'signInModal', style: styles.signInModal },
+                    _react2.default.createElement('input', { onKeyPress: this.handleInput, className: 'usernameInput', style: styles.usernameInput, placeholder: 'UserName' })
+                );
+            }
         }
     }]);
 
@@ -42826,7 +42856,7 @@ var UserWindow = function (_Component) {
         _this.createListofUsers = _this.createListOfUsers.bind(_this);
         _this.updateUserList = _this.updateUserList().bind(_this);
         _this.state = {
-            currentUser: '',
+            currentUser: "",
             users: {}
         };
 
@@ -43025,7 +43055,8 @@ var App = function (_Component) {
 
         _this.setClientUsername = _this.setClientUsername.bind(_this);
         _this.state = {
-            clientUser: ''
+            clientUser: String,
+            activationStatus: Boolean
         };
 
         return _this;
@@ -43035,11 +43066,39 @@ var App = function (_Component) {
         key: 'setClientUsername',
         value: function setClientUsername(username) {
 
-            //write user entry in the '/user' database endpoint
-            firebase.database().ref('/users').child(username.toLowerCase()).update({
-                'username': username,
-                'lastupdate': Date.now(),
-                'connected': true
+            // Referance point to user table
+            var ref = firebase.database().ref('/users');
+
+            ref.once('value').then(function (snapshot) {
+                // Control for add set user to database if name available. 
+                //  If user is already in existance set advisory for user
+                if (snapshot.child(username.toLowerCase()).exists()) {
+                    // TODO: send props sign component to display that username is unavailable
+
+                    this.setState({
+                        activationStatus: false
+                    });
+
+                    console.log(this.state.activationStatus);
+
+                    console.log('100');
+                    return false;
+                } else {
+
+                    //post user entry in the '/user' database endpoint
+                    snapshot.child(username.toLowerCase()).update({
+                        'username': username,
+                        'lastupdate': Date.now(),
+                        'connected': true
+                    });
+
+                    this.setState({
+                        activationStatus: true
+                    });
+
+                    console.log('200');
+                    return true;
+                }
             });
 
             //write user to state
@@ -43052,7 +43111,7 @@ var App = function (_Component) {
             return _react2.default.createElement(
                 'div',
                 { style: styles.app },
-                _react2.default.createElement(_signin_modal2.default, { setUser: this.setClientUsername }),
+                _react2.default.createElement(_signin_modal2.default, { setUser: this.setClientUsername, activationStatus: this.state.activationStatus }),
                 _react2.default.createElement(_userwindow2.default, { clientuser: this.state.clientUser, style: styles.userWindow }),
                 _react2.default.createElement(_chatroom2.default, { clientuser: this.state.clientUser, style: styles.chatRoom })
             );

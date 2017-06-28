@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 
+
 // Component Styles
 
 const   mainColor = '#1A1C2B',
@@ -13,6 +14,7 @@ const styles = {
             background: mainColor,
             display: 'flex',
             height: '100%',
+            flexDirection: 'column',
             justifyContent: 'center',
             opacity: '.95',
             position: 'absolute',
@@ -28,7 +30,11 @@ const styles = {
             outline: "none",
             textAlign: 'center',
             width: '50%'
-        }   
+        },
+        usernameAdvisory: {
+           textAlign: 'center' 
+        }
+        
 }
 
 
@@ -37,12 +43,13 @@ export default class SignInModal extends Component {
     constructor(props,context){
         super(props,context)
         this.setClientUsername = this.props.setUser;
+        this.activationStatus = this.props.activationStatus;
         this.handleInput = this.handleInput.bind(this);
         this.state = {
-            username: ''
+            username: ""
         };
 
-    }// end of contructor_function
+    }// end of constructor_function
 
     handleInput(e){
         
@@ -50,8 +57,19 @@ export default class SignInModal extends Component {
         let emptySpaces = new RegExp(/^\s+/, 'g')
         if(e.key == 'Enter' && e.target.value != '' && !e.target.value.match(emptySpaces)){
 
-            this.setClientUsername(e.target.value);
-            styles.signInModal = {display: 'none'};
+
+            // call setClientUsername method
+            //  - Method will return true and set usernam if name handle is available
+            //  - If handle is not available method will return false value to usernameChoice Method
+            let usernameWasAvailable = this.setClientUsername(e.target.value);
+
+            if(usernameWasAvailable === true){
+                styles.signInModal = {display: 'none'};
+            } else {
+                e.target.value = "";
+            }
+
+            console.log(usernameWasAvailable)
             return 0
 
         }
@@ -59,13 +77,28 @@ export default class SignInModal extends Component {
     }
 
     render(){
-        return (
 
-                    <div className='signInModal' style={styles.signInModal}>
-                        <input onKeyPress={this.handleInput} className='usernameInput' style={styles.usernameInput} placeholder='UserName'/>
-                    </div>
-            
-            )
+      if ( this.activationStatus === false) {
+            return (
+
+                        <div className='signInModal' style={styles.signInModal}>
+                            <input onKeyPress={this.handleInput} className='usernameInput' style={styles.usernameInput} placeholder='UserName'/>
+                                <div className='usernameAdvisory'>
+                                    That Username Is Being Used... But I Believe In Your Creativity                               
+                                </div>
+                        </div>
+                
+                )
+
+        } else {
+            return (
+
+                        <div className='signInModal' style={styles.signInModal}>
+                            <input onKeyPress={this.handleInput} className='usernameInput' style={styles.usernameInput} placeholder='UserName'/>
+                        </div>
+                
+                )
+            }
     }
 
 }

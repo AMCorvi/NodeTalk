@@ -39,22 +39,57 @@ class App extends Component {
         super()
         this.setClientUsername = this.setClientUsername.bind(this);
         this.state = {
-            clientUser:''
+            clientUser: String,
+            activationStatus: Boolean
         }
 
     } // end of constructor_function
 
     setClientUsername(username){
         
-        //write user entry in the '/user' database endpoint
-        firebase.database().ref('/users').child(username.toLowerCase()).update(
-            {
-               'username': username,
-               'lastupdate': Date.now(),
-               'connected': true
-            }
-        )
 
+        // Referance point to user table
+        let ref = firebase.database().ref('/users')
+
+        ref.once('value')
+        .then(function(snapshot){
+            // Control for add set user to database if name available. 
+            //  If user is already in existance set advisory for user
+            if( snapshot.child(username.toLowerCase()).exists() ){
+                // TODO: send props sign component to display that username is unavailable
+                    
+                this.setState({
+                    activationStatus: false
+                })
+
+                console.log(this.state.activationStatus)
+
+                console.log('100');
+                return false
+
+            } else {
+
+                //post user entry in the '/user' database endpoint
+                snapshot.child(username.toLowerCase()).update(
+                    {
+                       'username': username,
+                       'lastupdate': Date.now(),
+                       'connected': true
+                    }
+                );
+
+
+                this.setState({
+                    activationStatus: true
+                })
+                
+                console.log('200')
+                return true; 
+        
+            }
+        })
+
+        
         //write user to state
         this.setState( { clientUser: username } )
     } // end of setUserClientUsername_function
@@ -63,7 +98,7 @@ class App extends Component {
         return (
 
             <div style={styles.app}>
-                <SignInModal setUser={this.setClientUsername} />
+                <SignInModal setUser={this.setClientUsername} activationStatus={this.state.activationStatus}/>
                 <UserWindow clientuser={this.state.clientUser} style={styles.userWindow} />
                 <ChatRoom  clientuser={this.state.clientUser} style={styles.chatRoom} />
             </div>

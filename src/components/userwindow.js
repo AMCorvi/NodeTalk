@@ -78,7 +78,7 @@ import * as firebase from 'firebase';
             this.createListofUsers = this.createListOfUsers.bind(this);
             this.updateUserList = this.updateUserList().bind(this);
             this.state = {
-                    currentUser: '',
+                    currentUser: "",
                     users: {}
                 }
 
@@ -161,17 +161,20 @@ import * as firebase from 'firebase';
         render(){
             
             return (
-                <div className="userWindowContainer" style={styles.userWindowContainer}>
+                    <div className="userWindowContainer" style={styles.userWindowContainer}>
+
                           <div className='titleBar' style={styles.titleBar} >
                                 nodeTalk
                           </div>                                              
+
                           <div className="userList" style={styles.userList} >
                          {this.createListOfUsers()} 
-                      </div>
-                </div>
-        )
+                          </div>
 
-    }
+                    </div>
+                  )
+
+        }
 
         
     }
