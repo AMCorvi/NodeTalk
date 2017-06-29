@@ -42706,16 +42706,15 @@ var SignInModal = function (_Component) {
                 //  - If handle is not available method will return false value to usernameChoice Method
                 var usernameWasAvailable = this.setClientUsername(e.target.value);
 
-                if (usernameWasAvailable === true) {
+                console.log(usernameWasAvailable);
+                if (usernameWasAvailable == true) {
+                    console.log('these nuts');
                     styles.signInModal = { display: 'none' };
                 } else {
                     e.target.value = "";
+                    console.log('those nuts');
                 }
-
-                console.log(usernameWasAvailable);
-                return 0;
             }
-            this.setState({ username: e.target.value });
         }
     }, {
         key: 'render',
@@ -43055,8 +43054,8 @@ var App = function (_Component) {
 
         _this.setClientUsername = _this.setClientUsername.bind(_this);
         _this.state = {
-            clientUser: String,
-            activationStatus: Boolean
+            clientUser: "",
+            activationStatus: true
         };
 
         return _this;
@@ -43066,43 +43065,51 @@ var App = function (_Component) {
         key: 'setClientUsername',
         value: function setClientUsername(username) {
 
+            // declare variable used to represent successful selection and creation of
+            // of username (i.e. true) or unsuccessful selection (i.e. false)
+            var result = void 0;
+
             // Referance point to user table
             var ref = firebase.database().ref('/users');
 
-            ref.once('value').then(function (snapshot) {
-                // Control for add set user to database if name available. 
+            // OnComplete callback function 
+            var setResult = function setResult(snapshot) {
+
+                !snapshot.child(username.toLowerCase()).exists() ? result = true : result = false;
+                console.log(result);
+            };
+
+            ref.once('value', setResult, this).then(function (snapshot) {
+
+                // Control to set user to database if name available. 
                 //  If user is already in existance set advisory for user
-                if (snapshot.child(username.toLowerCase()).exists()) {
-                    // TODO: send props sign component to display that username is unavailable
+                if (snapshot.child(username.toLowerCase()).exists() === true) {
+                    // TODO: send props signin component to display that username is unavailable
 
-                    this.setState({
-                        activationStatus: false
-                    });
 
-                    console.log(this.state.activationStatus);
-
-                    console.log('100');
-                    return false;
+                    return result = false;
                 } else {
 
                     //post user entry in the '/user' database endpoint
-                    snapshot.child(username.toLowerCase()).update({
+                    ref.child(username.toLowerCase()).set({
                         'username': username,
                         'lastupdate': Date.now(),
                         'connected': true
                     });
 
-                    this.setState({
-                        activationStatus: true
-                    });
-
-                    console.log('200');
-                    return true;
+                    return result = true;
                 }
             });
 
-            //write user to state
-            this.setState({ clientUser: username });
+            // set username and successful 'activationStatus' to true in state if username is available
+            //  If: Username is not available set activation status to false.  
+            result ? this.setState({
+                activationStatus: true,
+                clientUser: username
+            }) : this.setState({ activationStatus: false });
+
+            console.log(result, ' was sent to signing component');
+            return result;
         } // end of setUserClientUsername_function
 
     }, {

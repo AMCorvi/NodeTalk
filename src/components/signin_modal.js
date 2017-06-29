@@ -52,6 +52,7 @@ export default class SignInModal extends Component {
     }// end of constructor_function
 
     handleInput(e){
+
         
         // RegEx to check for text field with no characters
         let emptySpaces = new RegExp(/^\s+/, 'g')
@@ -63,17 +64,18 @@ export default class SignInModal extends Component {
             //  - If handle is not available method will return false value to usernameChoice Method
             let usernameWasAvailable = this.setClientUsername(e.target.value);
 
-            if(usernameWasAvailable === true){
+
+            console.log(usernameWasAvailable)
+            if( usernameWasAvailable == true ){
+                console.log('these nuts')
                 styles.signInModal = {display: 'none'};
             } else {
                 e.target.value = "";
+                console.log('those nuts')
             }
 
-            console.log(usernameWasAvailable)
-            return 0
 
         }
-       this.setState({username: e.target.value}) 
     }
 
     render(){
@@ -83,9 +85,9 @@ export default class SignInModal extends Component {
 
                         <div className='signInModal' style={styles.signInModal}>
                             <input onKeyPress={this.handleInput} className='usernameInput' style={styles.usernameInput} placeholder='UserName'/>
-                                <div className='usernameAdvisory'>
-                                    That Username Is Being Used... But I Believe In Your Creativity                               
-                                </div>
+                            <div className='usernameAdvisory'>
+                                That Username Is Being Used... But I Believe In Your Creativity                               
+                            </div>
                         </div>
                 
                 )
