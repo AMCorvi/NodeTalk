@@ -42670,7 +42670,13 @@ var styles = {
         width: '50%'
     },
     usernameAdvisory: {
-        textAlign: 'center'
+
+        textAlign: 'center',
+        color: accentColor,
+        marginTop: 20,
+        opacity: 1,
+        transition: 'opacity 1s ease-in-out'
+
     }
 
 };
@@ -42684,7 +42690,6 @@ var SignInModal = function (_Component) {
         var _this = _possibleConstructorReturn(this, (SignInModal.__proto__ || Object.getPrototypeOf(SignInModal)).call(this, props, context));
 
         _this.setClientUsername = _this.props.setUser;
-        _this.activationStatus = _this.props.activationStatus;
         _this.handleInput = _this.handleInput.bind(_this);
         _this.state = {
             username: ""
@@ -42692,6 +42697,7 @@ var SignInModal = function (_Component) {
 
         return _this;
     } // end of constructor_function
+
 
     _createClass(SignInModal, [{
         key: 'handleInput',
@@ -42706,13 +42712,10 @@ var SignInModal = function (_Component) {
                 //  - If handle is not available method will return false value to usernameChoice Method
                 var usernameWasAvailable = this.setClientUsername(e.target.value);
 
-                console.log(usernameWasAvailable);
                 if (usernameWasAvailable == true) {
-                    console.log('these nuts');
                     styles.signInModal = { display: 'none' };
                 } else {
                     e.target.value = "";
-                    console.log('those nuts');
                 }
             }
         }
@@ -42720,15 +42723,17 @@ var SignInModal = function (_Component) {
         key: 'render',
         value: function render() {
 
-            if (this.activationStatus === false) {
+            if (this.props.activationStatus === false) {
                 return _react2.default.createElement(
                     'div',
                     { className: 'signInModal', style: styles.signInModal },
                     _react2.default.createElement('input', { onKeyPress: this.handleInput, className: 'usernameInput', style: styles.usernameInput, placeholder: 'UserName' }),
                     _react2.default.createElement(
                         'div',
-                        { className: 'usernameAdvisory' },
-                        'That Username Is Being Used... But I Believe In Your Creativity'
+                        { className: 'usernameAdvisory', style: styles.usernameAdvisory },
+                        'That Username Is Being Used... But I Believe In Your Creativity',
+                        _react2.default.createElement('br', null),
+                        ' Try Another Username'
                     )
                 );
             } else {
@@ -43055,7 +43060,7 @@ var App = function (_Component) {
         _this.setClientUsername = _this.setClientUsername.bind(_this);
         _this.state = {
             clientUser: "",
-            activationStatus: true
+            activationStatus: undefined
         };
 
         return _this;
@@ -43076,7 +43081,6 @@ var App = function (_Component) {
             var setResult = function setResult(snapshot) {
 
                 !snapshot.child(username.toLowerCase()).exists() ? result = true : result = false;
-                console.log(result);
             };
 
             ref.once('value', setResult, this).then(function (snapshot) {
@@ -43087,7 +43091,6 @@ var App = function (_Component) {
                     // TODO: send props signin component to display that username is unavailable
 
 
-                    return result = false;
                 } else {
 
                     //post user entry in the '/user' database endpoint
@@ -43096,8 +43099,6 @@ var App = function (_Component) {
                         'lastupdate': Date.now(),
                         'connected': true
                     });
-
-                    return result = true;
                 }
             });
 
@@ -43108,7 +43109,6 @@ var App = function (_Component) {
                 clientUser: username
             }) : this.setState({ activationStatus: false });
 
-            console.log(result, ' was sent to signing component');
             return result;
         } // end of setUserClientUsername_function
 

@@ -32,7 +32,13 @@ const styles = {
             width: '50%'
         },
         usernameAdvisory: {
-           textAlign: 'center' 
+
+           textAlign: 'center',
+           color: accentColor,
+           marginTop: 20,
+           opacity: 1,   
+           transition: 'opacity 1s ease-in-out'
+           
         }
         
 }
@@ -43,7 +49,6 @@ export default class SignInModal extends Component {
     constructor(props,context){
         super(props,context)
         this.setClientUsername = this.props.setUser;
-        this.activationStatus = this.props.activationStatus;
         this.handleInput = this.handleInput.bind(this);
         this.state = {
             username: ""
@@ -51,9 +56,9 @@ export default class SignInModal extends Component {
 
     }// end of constructor_function
 
+
     handleInput(e){
 
-        
         // RegEx to check for text field with no characters
         let emptySpaces = new RegExp(/^\s+/, 'g')
         if(e.key == 'Enter' && e.target.value != '' && !e.target.value.match(emptySpaces)){
@@ -65,13 +70,10 @@ export default class SignInModal extends Component {
             let usernameWasAvailable = this.setClientUsername(e.target.value);
 
 
-            console.log(usernameWasAvailable)
             if( usernameWasAvailable == true ){
-                console.log('these nuts')
                 styles.signInModal = {display: 'none'};
             } else {
                 e.target.value = "";
-                console.log('those nuts')
             }
 
 
@@ -80,13 +82,14 @@ export default class SignInModal extends Component {
 
     render(){
 
-      if ( this.activationStatus === false) {
+      if ( this.props.activationStatus === false ) {
             return (
 
                         <div className='signInModal' style={styles.signInModal}>
                             <input onKeyPress={this.handleInput} className='usernameInput' style={styles.usernameInput} placeholder='UserName'/>
-                            <div className='usernameAdvisory'>
+                            <div className='usernameAdvisory' style={styles.usernameAdvisory}>
                                 That Username Is Being Used... But I Believe In Your Creativity                               
+                                <br/> Try Another Username
                             </div>
                         </div>
                 

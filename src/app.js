@@ -40,7 +40,7 @@ class App extends Component {
         this.setClientUsername = this.setClientUsername.bind(this);
         this.state = {
             clientUser: "",
-            activationStatus: true 
+            activationStatus: undefined 
       }
 
     } // end of constructor_function
@@ -64,7 +64,6 @@ class App extends Component {
             !snapshot.child(username.toLowerCase()).exists() ?
              result = true
              : result = false
-             console.log(result)
         }
 
         ref.once('value',setResult,this)
@@ -77,7 +76,6 @@ class App extends Component {
                 // TODO: send props signin component to display that username is unavailable
                     
                  
-                return  result = false
 
             } else {
 
@@ -92,7 +90,6 @@ class App extends Component {
                 );
 
 
-                return result = true; 
         
             }
         })
@@ -106,7 +103,6 @@ class App extends Component {
         }) 
         : this.setState({ activationStatus: false });
         
-        console.log(result, ' was sent to signing component')
         return result
 
     } // end of setUserClientUsername_function
