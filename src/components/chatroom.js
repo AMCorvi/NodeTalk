@@ -171,6 +171,7 @@ export default class ChatRoom extends Component {
 
     // Upon change in value of '/message' endpoint in database update message object in state
     componentDidMount(){
+        
         // retrieve messages from database
         firebase.database().ref('messages/').on('value', (snapshot)=> {
             const currentMessages = snapshot.val()
@@ -298,7 +299,7 @@ export default class ChatRoom extends Component {
 
             messageWindowElement[0].scrollTop = messageWindowHeight;
 
-    }// end of scrollToLastMessage_function
+        } // end of scrollToLastMessage_function
 
 
     signOut() {

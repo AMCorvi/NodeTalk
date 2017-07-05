@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 
+
 // Component Styles
 
 const   mainColor = '#1A1C2B',
@@ -13,6 +14,7 @@ const styles = {
             background: mainColor,
             display: 'flex',
             height: '100%',
+            flexDirection: 'column',
             justifyContent: 'center',
             opacity: '.95',
             position: 'absolute',
@@ -28,7 +30,17 @@ const styles = {
             outline: "none",
             textAlign: 'center',
             width: '50%'
-        }   
+        },
+        usernameAdvisory: {
+
+           textAlign: 'center',
+           color: accentColor,
+           marginTop: 20,
+           opacity: 1,   
+           transition: 'opacity 1s ease-in-out'
+           
+        }
+        
 }
 
 
@@ -39,35 +51,60 @@ export default class SignInModal extends Component {
         this.setClientUsername = this.props.setUser;
         this.handleInput = this.handleInput.bind(this);
         this.state = {
-            username: ''
+            username: ""
         };
 
-    }// end of contructor_function
+    }// end of constructor_function
+
 
     handleInput(e){
-        
+
         // RegEx to check for text field with no characters
         let emptySpaces = new RegExp(/^\s+/, 'g')
 
         if(e.key == 'Enter' && e.target.value != '' && !e.target.value.match(emptySpaces)){
 
-            this.setClientUsername(e.target.value);
-            styles.signInModal = {display: 'none'};
-            return 0
+
+            // call setClientUsername method
+            //  - Method will return true and set usernam if name handle is available
+            //  - If handle is not available method will return false value to usernameChoice Method
+            let usernameWasAvailable = this.setClientUsername(e.target.value);
+
+
+            if( usernameWasAvailable == true ){
+                styles.signInModal = {display: 'none'};
+            } else {
+                e.target.value = "";
+            }
+
 
         }
-
-        this.setState({username: e.target.value}) 
     }
 
     render(){
-        return (
 
-                    <div className='signInModal' style={styles.signInModal}>
-                        <input onKeyPress={this.handleInput} className='usernameInput' style={styles.usernameInput} placeholder='UserName'/>
-                    </div>
-            
-            )
+      if ( this.props.activationStatus === false ) {
+            return (
+
+                        <div className='signInModal' style={styles.signInModal}>
+                            <input onKeyPress={this.handleInput} className='usernameInput' style={styles.usernameInput} placeholder='UserName'/>
+                            <div className='usernameAdvisory' style={styles.usernameAdvisory}>
+                                That Username Is Being Used... But I Believe In Your Creativity                               
+                                <br/> Try Another Username
+                            </div>
+                        </div>
+                
+                )
+
+        } else {
+            return (
+
+                        <div className='signInModal' style={styles.signInModal}>
+                            <input onKeyPress={this.handleInput} className='usernameInput' style={styles.usernameInput} placeholder='UserName'/>
+                        </div>
+                
+                )
+            }
     }
 
 }

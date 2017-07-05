@@ -77,9 +77,8 @@ import * as firebase from 'firebase';
             super(props)
             this.createListofUsers = this.createListOfUsers.bind(this);
             this.updateUserList = this.updateUserList().bind(this);
-            this.syncUsersToApp =  this.props.syncUsers ;    
             this.state = {
-                    currentUser: '',
+                    currentUser: "",
                     users: {}
                 }
 
@@ -116,12 +115,9 @@ import * as firebase from 'firebase';
         createListOfUsers(){
             
             let user = _.map( this.state.users, (elem) => {
-
-               if(elem.connected) {
-i                  // When parsing thru list of users if current username match the name of current user skip if else create user div
+                  // When parsing thru list of users if current username match the name of current user skip if else create user div
                     if (elem.username.toLowerCase() == this.state.currentUser.toLowerCase()) {
                         return (
-
                                 <div className="currentUser" key={elem.username} style={styles.currentUser}>
                                     <img className="userIMG" style={styles.userIMG} src={`http://i.pravatar.cc/40?u=${elem.username.toLowerCase()}`} alt=""/>
                                     <div className='userName' style={styles.userName}>{this.state.currentUser}</div>
@@ -136,9 +132,9 @@ i                  // When parsing thru list of users if current username match 
                                 </div>
                            )
                         }
-               }
-            })
+                    })
            
+
             return user;
             forceUpdate();
 
@@ -147,6 +143,7 @@ i                  // When parsing thru list of users if current username match 
 
 
         //--- update user list up changes to '/users' database endpoint
+        
         updateUserList(){
         
 
@@ -154,29 +151,28 @@ i                  // When parsing thru list of users if current username match 
                 this.setState({
                     users: (snapshot) ? snapshot.val() : Object
                 });
-
-                this.syncUsersToApp(this.state.users)
             })
 
-        }// end of updateUserList_methhod
-      
+        } // end of updateUserList_methhod
+
 
 
 
         render(){
             
             return (
-                <div className="userWindowContainer" style={styles.userWindowContainer}>
+                    <div className="userWindowContainer" style={styles.userWindowContainer}>
 
                           <div className='titleBar' style={styles.titleBar} >
                                 nodeTalk
                           </div>                                              
+
                           <div className="userList" style={styles.userList} >
                          {this.createListOfUsers()} 
-                      </div>
+                          </div>
 
-                </div>
-        )
+                    </div>
+                  )
 
         }
 

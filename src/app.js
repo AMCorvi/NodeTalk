@@ -38,119 +38,86 @@ class App extends Component {
 
         super()
         this.setClientUsername = this.setClientUsername.bind(this);
-        this.syncUsersToApp = this.syncUsersToApp.bind(this);
         this.state = {
-            activeSession: null, 
-            clientUser:'',
-            users: {}
-            
-
-        }
+            clientUser: "",
+            activationStatus: undefined 
+      }
 
     } // end of constructor_function
 
-    componentDidMount() {
-            
-        console.log(firebase.auth().currentUser) ;
-
-    }
-
-    componentWillMount() {
-        firebase.auth().onAuthStateChanged(
-            (user) => {
-                if(user){
-                    this.setState({
-                        activeSession: user
-                    });
-                }
-            }
-        )
-    }
-
-
     setClientUsername(username){
-
-        // Reference to entire user object
-        debugger ;
-        let userListRef = firebase.database().ref('/users')
-        console.log(userListRef);
-        debugger;
         
 
-        if ( this.state.activeSession == null) {
 
-            // Reference object location specific to current user 
-            let userRef = userListRef.child(username.toLowerCase());
-    
-                firebase.auth().signInAnonymously().catch( e => {
-                    console.log(`${e.code}: \n\n e.message`);
-                });
+        
+        // declare variable used to represent successful selection and creation of
+        // of username (i.e. true) or unsuccessful selection (i.e. false)
+        let result 
 
-                //write user entry in the '/user' database endpoint
-                console.log(this.state.activeSession.uid);
-                userRef.update(
+        // Referance point to user table
+        let ref = firebase.database().ref('/users')
+
+        
+        // OnComplete callback function 
+        const setResult = (snapshot)=>{     
+           
+            !snapshot.child(username.toLowerCase()).exists() ?
+             result = true
+             : result = false
+        }
+
+        ref.once('value',setResult,this)
+        .then(function(snapshot){
+
+
+            // Control to set user to database if name available. 
+            //  If user is already in existance set advisory for user
+            if( snapshot.child( username.toLowerCase()).exists() === true ){
+                // TODO: send props signin component to display that username is unavailable
+                    
+                 
+
+            } else {
+
+
+                //post user entry in the '/user' database endpoint
+                ref.child(username.toLowerCase()).set(
                     {
                        'username': username,
-                       'userID': this.state.activeSession.uid,
                        'lastupdate': Date.now(),
                        'connected': true
                     }
                 );
-        } else {
-            
-            //retrieve userid from session cookie
-            let { uid } = this.state.activeSession ;
-
-            //Craving a burrito bad!!! Taco King RUN!?
-            //Retrieve user information from user endpoint and set user to state
-
-            let usernameFromID = _.filter(this.state.users, (elem) => {
-                return elem.userID == uid ;
-            });
-
-            // Determine if username was passed to functions if not set it
-            username = (!username) ? usernameFromID : username ;
-
-        }
 
 
+        
+            }
+        })
 
-        // write user to state
-        // this.setState( {
-        //     clientUser: username,
-        // } )
+        
+        // set username and successful 'activationStatus' to true in state if username is available
+        //  If: Username is not available set activation status to false.  
+        result ? this.setState({
+            activationStatus: true,
+            clientUser: username 
+        }) 
+        : this.setState({ activationStatus: false });
+        
+        return result
 
-
-
-
-
-
-        //write user to state
-        this.setState( { clientUser: username } )
     } // end of setUserClientUsername_function
 
     render (){
-        
         return (
 
             <div style={styles.app}>
-
-                {
-                    this.state.activeSession == null
-                    ? <SignInModal setUser={this.setClientUsername} /> 
-                    : this.setClientUsername() 
-                }
-               
-
-                <UserWindow syncUsers={ this.syncUsersToApp } clientuser={this.state.clientUser} style={styles.userWindow} />
-
+                <SignInModal setUser={this.setClientUsername} activationStatus={this.state.activationStatus}/>
+                <UserWindow clientuser={this.state.clientUser} style={styles.userWindow} />
                 <ChatRoom  clientuser={this.state.clientUser} style={styles.chatRoom} />
-
             </div>
             
         )
     }
 }
-
 
 ReactDom.render(<App/>, document.getElementById('app'))

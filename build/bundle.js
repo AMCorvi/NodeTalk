@@ -42674,6 +42674,7 @@ var styles = {
         background: mainColor,
         display: 'flex',
         height: '100%',
+        flexDirection: 'column',
         justifyContent: 'center',
         opacity: '.95',
         position: 'absolute',
@@ -42689,7 +42690,17 @@ var styles = {
         outline: "none",
         textAlign: 'center',
         width: '50%'
+    },
+    usernameAdvisory: {
+
+        textAlign: 'center',
+        color: accentColor,
+        marginTop: 20,
+        opacity: 1,
+        transition: 'opacity 1s ease-in-out'
+
     }
+
 };
 
 var SignInModal = function (_Component) {
@@ -42703,11 +42714,12 @@ var SignInModal = function (_Component) {
         _this.setClientUsername = _this.props.setUser;
         _this.handleInput = _this.handleInput.bind(_this);
         _this.state = {
-            username: ''
+            username: ""
         };
 
         return _this;
-    } // end of contructor_function
+    } // end of constructor_function
+
 
     _createClass(SignInModal, [{
         key: 'handleInput',
@@ -42718,21 +42730,42 @@ var SignInModal = function (_Component) {
 
             if (e.key == 'Enter' && e.target.value != '' && !e.target.value.match(emptySpaces)) {
 
-                this.setClientUsername(e.target.value);
-                styles.signInModal = { display: 'none' };
-                return 0;
-            }
+                // call setClientUsername method
+                //  - Method will return true and set usernam if name handle is available
+                //  - If handle is not available method will return false value to usernameChoice Method
+                var usernameWasAvailable = this.setClientUsername(e.target.value);
 
-            this.setState({ username: e.target.value });
+                if (usernameWasAvailable == true) {
+                    styles.signInModal = { display: 'none' };
+                } else {
+                    e.target.value = "";
+                }
+            }
         }
     }, {
         key: 'render',
         value: function render() {
-            return _react2.default.createElement(
-                'div',
-                { className: 'signInModal', style: styles.signInModal },
-                _react2.default.createElement('input', { onKeyPress: this.handleInput, className: 'usernameInput', style: styles.usernameInput, placeholder: 'UserName' })
-            );
+
+            if (this.props.activationStatus === false) {
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'signInModal', style: styles.signInModal },
+                    _react2.default.createElement('input', { onKeyPress: this.handleInput, className: 'usernameInput', style: styles.usernameInput, placeholder: 'UserName' }),
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'usernameAdvisory', style: styles.usernameAdvisory },
+                        'That Username Is Being Used... But I Believe In Your Creativity',
+                        _react2.default.createElement('br', null),
+                        ' Try Another Username'
+                    )
+                );
+            } else {
+                return _react2.default.createElement(
+                    'div',
+                    { className: 'signInModal', style: styles.signInModal },
+                    _react2.default.createElement('input', { onKeyPress: this.handleInput, className: 'usernameInput', style: styles.usernameInput, placeholder: 'UserName' })
+                );
+            }
         }
     }]);
 
@@ -42849,9 +42882,8 @@ var UserWindow = function (_Component) {
 
         _this.createListofUsers = _this.createListOfUsers.bind(_this);
         _this.updateUserList = _this.updateUserList().bind(_this);
-        _this.syncUsersToApp = _this.props.syncUsers;
         _this.state = {
-            currentUser: '',
+            currentUser: "",
             users: {}
         };
 
@@ -42888,33 +42920,30 @@ var UserWindow = function (_Component) {
             var _this2 = this;
 
             var user = _lodash2.default.map(this.state.users, function (elem) {
-
-                if (elem.connected) {
-                    i; // When parsing thru list of users if current username match the name of current user skip if else create user div
-                    if (elem.username.toLowerCase() == _this2.state.currentUser.toLowerCase()) {
-                        return _react2.default.createElement(
+                // When parsing thru list of users if current username match the name of current user skip if else create user div
+                if (elem.username.toLowerCase() == _this2.state.currentUser.toLowerCase()) {
+                    return _react2.default.createElement(
+                        'div',
+                        { className: 'currentUser', key: elem.username, style: styles.currentUser },
+                        _react2.default.createElement('img', { className: 'userIMG', style: styles.userIMG, src: 'http://i.pravatar.cc/40?u=' + elem.username.toLowerCase(), alt: '' }),
+                        _react2.default.createElement(
                             'div',
-                            { className: 'currentUser', key: elem.username, style: styles.currentUser },
-                            _react2.default.createElement('img', { className: 'userIMG', style: styles.userIMG, src: 'http://i.pravatar.cc/40?u=' + elem.username.toLowerCase(), alt: '' }),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'userName', style: styles.userName },
-                                _this2.state.currentUser
-                            )
-                        );
-                    } else {
+                            { className: 'userName', style: styles.userName },
+                            _this2.state.currentUser
+                        )
+                    );
+                } else {
 
-                        return _react2.default.createElement(
+                    return _react2.default.createElement(
+                        'div',
+                        { className: 'user', key: elem.username, style: styles.user },
+                        _react2.default.createElement('img', { className: 'userIMG', style: styles.userIMG, src: 'http://i.pravatar.cc/40?u=' + elem.username.toLowerCase(), alt: '' }),
+                        _react2.default.createElement(
                             'div',
-                            { className: 'user', key: elem.username, style: styles.user },
-                            _react2.default.createElement('img', { className: 'userIMG', style: styles.userIMG, src: 'http://i.pravatar.cc/40?u=' + elem.username.toLowerCase(), alt: '' }),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'userName', style: styles.userName },
-                                elem.username
-                            )
-                        );
-                    }
+                            { className: 'userName', style: styles.userName },
+                            elem.username
+                        )
+                    );
                 }
             });
 
@@ -42934,8 +42963,6 @@ var UserWindow = function (_Component) {
                 _this3.setState({
                     users: snapshot ? snapshot.val() : Object
                 });
-
-                _this3.syncUsersToApp(_this3.state.users);
             });
         } // end of updateUserList_methhod
 
@@ -43054,98 +43081,68 @@ var App = function (_Component) {
         var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
         _this.setClientUsername = _this.setClientUsername.bind(_this);
-        _this.syncUsersToApp = _this.syncUsersToApp.bind(_this);
         _this.state = {
-            activeSession: null,
-            clientUser: '',
-            users: {}
-
+            clientUser: "",
+            activationStatus: undefined
         };
 
         return _this;
     } // end of constructor_function
 
     _createClass(App, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-
-            console.log(firebase.auth().currentUser);
-        }
-    }, {
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            var _this2 = this;
-
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                    _this2.setState({
-                        activeSession: user
-                    });
-                }
-            });
-        }
-    }, {
         key: 'setClientUsername',
         value: function setClientUsername(username) {
 
-            // Reference to entire user object
-            debugger;
-            var userListRef = firebase.database().ref('/users');
-            console.log(userListRef);
-            debugger;
+            // declare variable used to represent successful selection and creation of
+            // of username (i.e. true) or unsuccessful selection (i.e. false)
+            var result = void 0;
 
-            if (this.state.activeSession == null) {
+            // Referance point to user table
+            var ref = firebase.database().ref('/users');
 
-                // Reference object location specific to current user 
-                var userRef = userListRef.child(username.toLowerCase());
+            // OnComplete callback function 
+            var setResult = function setResult(snapshot) {
 
-                firebase.auth().signInAnonymously().catch(function (e) {
-                    console.log(e.code + ': \n\n e.message');
-                });
+                !snapshot.child(username.toLowerCase()).exists() ? result = true : result = false;
+            };
 
-                //write user entry in the '/user' database endpoint
-                console.log(this.state.activeSession.uid);
-                userRef.update({
-                    'username': username,
-                    'userID': this.state.activeSession.uid,
-                    'lastupdate': Date.now(),
-                    'connected': true
-                });
-            } else {
+            ref.once('value', setResult, this).then(function (snapshot) {
 
-                //retrieve userid from session cookie
-                var uid = this.state.activeSession.uid;
-
-                //Craving a burrito bad!!! Taco King RUN!?
-                //Retrieve user information from user endpoint and set user to state
-
-                var usernameFromID = _.filter(this.state.users, function (elem) {
-                    return elem.userID == uid;
-                });
-
-                // Determine if username was passed to functions if not set it
-                username = !username ? usernameFromID : username;
-            }
-
-            // write user to state
-            // this.setState( {
-            //     clientUser: username,
-            // } )
+                // Control to set user to database if name available. 
+                //  If user is already in existance set advisory for user
+                if (snapshot.child(username.toLowerCase()).exists() === true) {
+                    // TODO: send props signin component to display that username is unavailable
 
 
-            //write user to state
-            this.setState({ clientUser: username });
+                } else {
+
+                    //post user entry in the '/user' database endpoint
+                    ref.child(username.toLowerCase()).set({
+                        'username': username,
+                        'lastupdate': Date.now(),
+                        'connected': true
+                    });
+                }
+            });
+
+            // set username and successful 'activationStatus' to true in state if username is available
+            //  If: Username is not available set activation status to false.  
+            result ? this.setState({
+                activationStatus: true,
+                clientUser: username
+            }) : this.setState({ activationStatus: false });
+
+            return result;
         } // end of setUserClientUsername_function
 
     }, {
         key: 'render',
         value: function render() {
-
             return _react2.default.createElement(
                 'div',
                 { style: styles.app },
-                this.state.activeSession == null ? _react2.default.createElement(_signin_modal2.default, { setUser: this.setClientUsername }) : this.setClientUsername(),
-                _react2.default.createElement(_userwindow2.default, { syncUsers: this.syncUsersToApp, clientuser: this.state.clientUser, style: styles.userWindow }),
+                _react2.default.createElement(_signin_modal2.default, { setUser: this.setClientUsername, activationStatus: this.state.activationStatus }),
+                _react2.default.createElement(_userwindow2.default, { clientuser: this.state.clientUser, style: styles.userWindow }),
                 _react2.default.createElement(_chatroom2.default, { clientuser: this.state.clientUser, style: styles.chatRoom })
             );
         }
